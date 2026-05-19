@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Patient Registration | CareFirst Hospital</title>
+  <style>
+    :root {
+      --primary: #0a6e8a;
+      --primary-dark: #064d63;
+      --primary-mid: #0e8fa8;
+      --accent: #f0a500;
+      --glow: rgba(10,110,138,0.32);
+      --input-bg: rgba(255,255,255,0.07);
+      --input-border: rgba(255,255,255,0.18);
+      --text-primary: #e8f6fa;
+      --text-muted: #90bfcc;
+      --label: #b3dce8;
+      --radius: 14px;
+      --success: #22c55e;
+      --danger: #fc8181;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    html, body { width:100%; min-height:100vh; overflow-x:hidden; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(160deg,
+        #03232e 0%, #064d63 28%, #0a6e8a 58%, #05303d 82%, #021820 100%);
+      color: var(--text-primary);
+      position: relative;
+    }
+
+    /* Ambient blobs */
+    body::before, body::after {
+      content:''; position:fixed; border-radius:50%;
+      filter:blur(90px); pointer-events:none; z-index:0;
+      animation:drift 14s ease-in-out infinite alternate;
+    }
+    body::before {
+      width:480px; height:480px;
+      background:radial-gradient(circle,rgba(10,110,138,0.28),transparent 70%);
+      top:-120px; left:-80px;
+    }
+    body::after {
+      width:380px; height:380px;
+      background:radial-gradient(circle,rgba(14,143,168,0.20),transparent 70%);
+      bottom:-90px; right:-70px;
+      animation-delay:-7s; animation-duration:11s;
+    }
+    @keyframes drift {
+      from { transform:translate(0,0) scale(1); }
+      to   { transform:translate(40px,30px) scale(1.1); }
+    }
+
+    /* Particles */
+    .particles { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+    .particle { position:absolute; border-radius:50%; background:rgba(176,224,240,0.14); animation:floatUp linear infinite; }
+    .particle:nth-child(1){ width:4px;height:4px;left:8%;  animation-duration:16s; }
+    .particle:nth-child(2){ width:6px;height:6px;left:20%; animation-duration:20s; }
+    .particle:nth-child(3){ width:3px;height:3px;left:36%; animation-duration:13s; }
+    .particle:nth-child(4){ width:5px;height:5px;left:52%; animation-duration:18s; }
+    .particle:nth-child(5){ width:4px;height:4px;left:68%; animation-duration:22s; }
+    .particle:nth-child(6){ width:7px;height:7px;left:82%; animation-duration:15s; }
+    .particle:nth-child(7){ width:3px;height:3px;left:94%; animation-duration:12s; }
+    @keyframes floatUp {
+      0%   { transform:translateY(110vh) scale(0.8); opacity:0; }
+      10%  { opacity:1; }
+      90%  { opacity:0.5; }
+      100% { transform:translateY(-10vh) scale(1.2); opacity:0; }
+    }
+
+    /* Layout */
+    .page-wrap {
+      position:relative; z-index:10; width:100%; min-height:100vh;
+      display:flex; align-items:center; justify-content:center;
+      padding:24px 16px;
+    }
+
+    .signup-container {
+      position:relative; width:100%; max-width:560px;
+      background:rgba(3,30,40,0.90);
+      backdrop-filter:blur(28px) saturate(1.4);
+      padding:clamp(28px,6vw,50px) clamp(24px,6vw,46px);
+      border-radius:28px;
+      border:1px solid rgba(10,110,138,0.28);
+      box-shadow:0 32px 100px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.04) inset;
+    }
+
+    /* Header */
+    .card-header { text-align:center; margin-bottom:30px; }
+    .logo-ring {
+      display:inline-flex; align-items:center; justify-content:center;
+      width:64px; height:64px; border-radius:20px;
+      background:linear-gradient(135deg,var(--primary-dark),var(--primary-mid));
+      margin-bottom:14px;
+      box-shadow:0 8px 28px rgba(10,110,138,0.50);
+    }
+    .logo-ring svg { width:32px;height:32px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round; }
+    .logo-name { font-size:clamp(20px,5vw,26px); font-weight:700; letter-spacing:-.5px; color:#fff; }
+    .logo-name em { color:var(--accent); font-style:normal; }
+    .card-header .tagline { font-size:12.5px; color:var(--text-muted); margin-top:3px; }
+    .card-header h2 { font-size:clamp(19px,4vw,24px); font-weight:700; margin-top:18px; margin-bottom:4px; color:#fff; }
+    .card-header p { font-size:13px; color:var(--text-muted); }
+
+    /* Progress steps */
+    .steps {
+      display:flex; align-items:center; justify-content:center;
+      gap:0; margin-bottom:28px;
+    }
+    .step-item {
+      display:flex; flex-direction:column; align-items:center; gap:5px;
+      flex:1; position:relative;
+    }
+    .step-item:not(:last-child)::after {
+      content:''; position:absolute; top:15px; left:calc(50% + 16px); right:calc(-50% + 16px);
+      height:2px; background:rgba(255,255,255,0.12);
+      transition:background .4s;
+    }
+    .step-item.done:not(:last-child)::after { background:var(--primary-mid); }
+    .step-circle {
+      width:30px; height:30px; border-radius:50%;
+      border:2px solid rgba(255,255,255,0.18);
+      display:flex; align-items:center; justify-content:center;
+      font-size:12px; font-weight:700; color:var(--text-muted);
+      transition:all .3s; background:rgba(255,255,255,0.05);
+    }
+    .step-item.active .step-circle {
+      border-color:var(--primary-mid); background:var(--primary-mid);
+      color:#fff; box-shadow:0 0 14px rgba(14,143,168,0.50);
+    }
+    .step-item.done .step-circle {
+      border-color:var(--success); background:var(--success); color:#fff;
+    }
+    .step-label { font-size:10px; color:var(--text-muted); letter-spacing:.04em; text-transform:uppercase; }
+    .step-item.active .step-label { color:var(--primary-mid); }
+    .step-item.done .step-label { color:var(--success); }
+
+    /* Sections */
+    .form-section { display:none; }
+    .form-section.active { display:block; animation:fadeIn .3s ease; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+    /* Fields */
+    .field { margin-bottom:16px; }
+    .field label {
+      display:block; font-size:11px; font-weight:700;
+      letter-spacing:.09em; text-transform:uppercase;
+      color:var(--label); margin-bottom:7px;
+    }
+    .row-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+
+    /* Input */
+    .input-wrap { position:relative; }
+    .input-wrap .icon {
+      position:absolute; left:14px; top:50%; transform:translateY(-50%);
+      color:var(--text-muted); display:flex; align-items:center; pointer-events:none; z-index:2;
+    }
+    .input-wrap input, .input-wrap select, .input-wrap textarea {
+      width:100%; padding:12px 15px 12px 45px;
+      background:var(--input-bg); border:1px solid var(--input-border);
+      border-radius:var(--radius); font-size:14px; font-family:inherit;
+      color:var(--text-primary); transition:border-color .25s, box-shadow .25s, background .25s;
+    }
+    .input-wrap input::placeholder,
+    .input-wrap textarea::placeholder { color:var(--text-muted); }
+    .input-wrap input:focus,
+    .input-wrap select:focus,
+    .input-wrap textarea:focus {
+      outline:none; border-color:var(--primary-mid);
+      box-shadow:0 0 0 4px var(--glow);
+      background:rgba(10,110,138,0.10);
+    }
+    .input-wrap select { appearance:none; -webkit-appearance:none; cursor:pointer; }
+    .input-wrap select option { background:#042535; color:var(--text-primary); }
+    .select-arrow {
+      position:absolute; right:13px; top:50%; transform:translateY(-50%);
+      font-size:10px; color:var(--text-muted); pointer-events:none;
+    }
+    .input-wrap textarea { resize:vertical; min-height:80px; padding-top:12px; }
+
+    /* password strength */
+    .pw-strength { margin-top:7px; }
+    .strength-bar {
+      height:4px; border-radius:4px;
+      background:rgba(255,255,255,0.10);
+      overflow:hidden; margin-bottom:4px;
+    }
+    .strength-fill {
+      height:100%; width:0%; border-radius:4px;
+      transition:width .4s, background .4s;
+    }
+    .strength-label { font-size:11px; color:var(--text-muted); }
+
+    .pw-toggle {
+      position:absolute; right:12px; top:50%; transform:translateY(-50%);
+      background:none; border:none; cursor:pointer;
+      color:var(--text-muted); display:flex; align-items:center; transition:color .2s;
+    }
+    .pw-toggle:hover { color:#e2e8f0; }
+    .pw-toggle svg { width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round; }
+    .eye-off { display:none; }
+    .pw-toggle.visible .eye-on  { display:none; }
+    .pw-toggle.visible .eye-off { display:block; }
+
+    /* checkboxes */
+    .check-group { display:flex; align-items:flex-start; gap:10px; margin-bottom:14px; cursor:pointer; }
+    .check-group input[type="checkbox"] { width:15px; height:15px; flex-shrink:0; margin-top:2px; accent-color:var(--primary-mid); cursor:pointer; }
+    .check-group span { font-size:13px; color:var(--text-muted); line-height:1.5; }
+    .check-group a { color:#5fb8d4; text-decoration:none; }
+    .check-group a:hover { color:#93d5e8; }
+
+    /* field errors */
+    .field-error { color:var(--danger); font-size:11.5px; margin-top:4px; display:block; }
+
+    /* nav buttons */
+    .btn-row { display:flex; gap:12px; margin-top:6px; }
+    .btn-back {
+      flex:1; padding:13px 0; border:2px solid rgba(10,110,138,0.40);
+      border-radius:var(--radius); background:transparent;
+      color:var(--text-muted); font-size:14.5px; font-family:inherit;
+      font-weight:600; cursor:pointer; transition:all .2s;
+    }
+    .btn-back:hover { border-color:var(--primary-mid); color:#fff; }
+    .btn-next, .btn-submit {
+      flex:2; padding:13px 0; border:none; border-radius:var(--radius);
+      background:linear-gradient(135deg,var(--primary-dark),var(--primary-mid));
+      color:#fff; font-size:15px; font-family:inherit; font-weight:700;
+      cursor:pointer; transition:transform .2s, box-shadow .2s;
+      box-shadow:0 6px 24px rgba(10,110,138,0.40);
+    }
+    .btn-next:hover, .btn-submit:hover {
+      transform:translateY(-2px);
+      box-shadow:0 12px 32px rgba(10,110,138,0.55);
+    }
+    .btn-next span, .btn-submit span {
+      display:flex; align-items:center; justify-content:center; gap:8px;
+    }
+
+    /* success screen */
+    .success-screen {
+      display:none; text-align:center; padding:16px 0;
+      animation:fadeIn .4s ease;
+    }
+    .success-screen.show { display:block; }
+    .success-icon {
+      width:72px; height:72px; border-radius:50%;
+      background:linear-gradient(135deg,#15803d,#22c55e);
+      display:flex; align-items:center; justify-content:center;
+      margin:0 auto 20px; font-size:36px;
+      box-shadow:0 8px 28px rgba(34,197,94,0.40);
+    }
+    .success-screen h3 { font-size:22px; font-weight:700; color:#fff; margin-bottom:8px; }
+    .success-screen p { color:var(--text-muted); font-size:14px; margin-bottom:24px; }
+
+    /* divider + login link */
+    .divider { display:flex; align-items:center; gap:12px; margin:20px 0 16px; }
+    .divider::before, .divider::after { content:''; flex:1; height:1px; background:var(--input-border); }
+    .divider span { font-size:12px; color:var(--text-muted); white-space:nowrap; }
+    .login-text { text-align:center; font-size:13.5px; color:var(--text-muted); }
+    .login-text a { color:#5fb8d4; text-decoration:none; font-weight:700; }
+    .login-text a:hover { color:#93d5e8; }
+    .back-home { text-align:center; margin-top:16px; font-size:12.5px; }
+    .back-home a { color:var(--text-muted); text-decoration:none; display:inline-flex; align-items:center; gap:5px; transition:color .2s; }
+    .back-home a:hover { color:#fff; }
+
+    /* RESPONSIVE */
+    @media (max-width:480px) {
+      .signup-container { border-radius:20px; }
+      .row-2 { grid-template-columns:1fr; }
+      .steps { gap:0; }
+      .step-label { font-size:9px; }
+    }
+    @media (min-width:768px) and (max-width:1024px) { .page-wrap { padding:40px 32px; } }
+    @media (min-width:1024px) { .page-wrap { padding:48px 24px; } }
+  </style>
+</head>
+<body>
+
+<div class="particles">
+  <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+  <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+  <div class="particle"></div>
+</div>
+
+<div class="page-wrap">
+  <div class="signup-container">
+
+    <!-- Header -->
+    <div class="card-header">
+      <div class="logo-ring">
+        <svg viewBox="0 0 24 24">
+          <rect x="9" y="2" width="6" height="20" rx="1"/>
+          <rect x="2" y="9" width="20" height="6" rx="1"/>
+        </svg>
+      </div>
+      <div class="logo-name">Care<em>First</em></div>
+      <div class="tagline">Advanced Healthcare — Compassionate Care</div>
+      <h2>Create Your Account</h2>
+      <p>Register to access the patient portal</p>
+    </div>
+
+    <!-- Steps indicator -->
+    <div class="steps" id="stepsBar">
+      <div class="step-item active" id="step1-ind">
+        <div class="step-circle">1</div>
+        <div class="step-label">Personal</div>
+      </div>
+      <div class="step-item" id="step2-ind">
+        <div class="step-circle">2</div>
+        <div class="step-label">Health</div>
+      </div>
+      <div class="step-item" id="step3-ind">
+        <div class="step-circle">3</div>
+        <div class="step-label">Security</div>
+      </div>
+    </div>
+
+    <!-- ═══ FORM ═══ -->
+    <form id="signupForm" novalidate>
+
+      <!-- STEP 1 — Personal Details -->
+      <div class="form-section active" id="section1">
+
+        <div class="row-2">
+          <div class="field">
+            <label>First Name</label>
+            <div class="input-wrap">
+              <span class="icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </span>
+              <input type="text" id="firstName" placeholder="First name"/>
+            </div>
+            <span class="field-error" id="firstNameError"></span>
+          </div>
+          <div class="field">
+            <label>Last Name</label>
+            <div class="input-wrap">
+              <span class="icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </span>
+              <input type="text" id="lastName" placeholder="Last name"/>
+            </div>
+            <span class="field-error" id="lastNameError"></span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Email Address</label>
+          <div class="input-wrap">
+            <span class="icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8l10 6 10-6"/></svg>
+            </span>
+            <input type="email" id="regEmail" placeholder="your@email.com" autocomplete="email"/>
+          </div>
+          <span class="field-error" id="regEmailError"></span>
+        </div>
+
+        <div class="field">
+          <label>Phone Number</label>
+          <div class="input-wrap">
+            <span class="icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3-8.59A2 2 0 0 1 3.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9a16 16 0 0 0 6.72 6.72l.27-.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </span>
+            <input type="tel" id="phone" placeholder="+91 XXXXXXXXXX"/>
+          </div>
+          <span class="field-error" id="phoneError"></span>
+        </div>
+
+        <div class="row-2">
+          <div class="field">
+            <label>Date of Birth</label>
+            <div class="input-wrap">
+              <span class="icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              </span>
+              <input type="date" id="dob"/>
+            </div>
+            <span class="field-error" id="dobError"></span>
+          </div>
+          <div class="field">
+            <label>Gender</label>
+            <div class="input-wrap" style="position:relative;">
+              <span class="icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M2 12h2m16 0h2M4.22 19.78l1.42-1.42"/></svg>
+              </span>
+              <select id="gender">
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+                <option value="prefer_not">Prefer not to say</option>
+              </select>
+              <span class="select-arrow">&#9660;</span>
+            </div>
+            <span class="field-error" id="genderError"></span>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button type="button" class="btn-next" id="next1">
+            <span>Continue &#8594;</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 2 — Health Info -->
+      <div class="form-section" id="section2">
+
+        <div class="row-2">
+          <div class="field">
+            <label>Blood Group</label>
+            <div class="input-wrap" style="position:relative;">
+              <span class="icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 8v4l3 3"/></svg>
+              </span>
+              <select id="bloodGroup">
+                <option value="">Select</option>
+                <option>A+</option><option>A-</option>
+                <option>B+</option><option>B-</option>
+                <option>O+</option><option>O-</option>
+                <option>AB+</option><option>AB-</option>
+              </select>
+              <span class="select-arrow">&#9660;</span>
+            </div>
+          </div>
+          <div class="field">
+            <label>Preferred Department</label>
+            <div class="input-wrap" style="position:relative;">
+              <span class="icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              </span>
+              <select id="department">
+                <option value="">Select</option>
+                <option>Cardiology</option>
+                <option>Neurology</option>
+                <option>Orthopaedics</option>
+                <option>Oncology</option>
+                <option>Paediatrics</option>
+                <option>Obstetrics &amp; Gynaecology</option>
+                <option>Ophthalmology</option>
+                <option>General Medicine</option>
+                <option>Dentistry</option>
+                <option>Psychiatry</option>
+              </select>
+              <span class="select-arrow">&#9660;</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Known Allergies (if any)</label>
+          <div class="input-wrap">
+            <span class="icon" style="top:14px;transform:none;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </span>
+            <textarea id="allergies" placeholder="e.g. Penicillin, Dust, Pollen — or None"></textarea>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Emergency Contact Name</label>
+          <div class="input-wrap">
+            <span class="icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </span>
+            <input type="text" id="emergencyName" placeholder="Full name"/>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Emergency Contact Phone</label>
+          <div class="input-wrap">
+            <span class="icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3-8.59A2 2 0 0 1 3.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9a16 16 0 0 0 6.72 6.72l.27-.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </span>
+            <input type="tel" id="emergencyPhone" placeholder="+91 XXXXXXXXXX"/>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button type="button" class="btn-back" id="back2">&#8592; Back</button>
+          <button type="button" class="btn-next" id="next2">
+            <span>Continue &#8594;</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 3 — Security -->
+      <div class="form-section" id="section3">
+
+        <div class="field">
+          <label>Create Password</label>
+          <div class="input-wrap">
+            <span class="icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </span>
+            <input type="password" id="regPassword" placeholder="Create a strong password" autocomplete="new-password"/>
+            <button type="button" class="pw-toggle" id="pwToggle1" aria-label="Toggle password">
+              <svg class="eye-on" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg class="eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+          </div>
+          <div class="pw-strength">
+            <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+            <div class="strength-label" id="strengthLabel">Enter a password</div>
+          </div>
+          <span class="field-error" id="regPwError"></span>
+        </div>
+
+        <div class="field">
+          <label>Confirm Password</label>
+          <div class="input-wrap">
+            <span class="icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </span>
+            <input type="password" id="confirmPassword" placeholder="Re-enter your password" autocomplete="new-password"/>
+            <button type="button" class="pw-toggle" id="pwToggle2" aria-label="Toggle confirm password">
+              <svg class="eye-on" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg class="eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+          </div>
+          <span class="field-error" id="confirmPwError"></span>
+        </div>
+
+        <label class="check-group">
+          <input type="checkbox" id="agreeTerms"/>
+          <span>I agree to CareFirst's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
+        </label>
+        <label class="check-group">
+          <input type="checkbox" id="agreeHealth"/>
+          <span>I consent to my health data being stored securely for medical purposes</span>
+        </label>
+        <span class="field-error" id="termsError"></span>
+
+        <div class="btn-row">
+          <button type="button" class="btn-back" id="back3">&#8592; Back</button>
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <span>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Complete Registration
+            </span>
+          </button>
+        </div>
+      </div>
+
+    </form>
+
+    <!-- Success Screen -->
+    <div class="success-screen" id="successScreen">
+      <div class="success-icon">&#10003;</div>
+      <h3>Registration Successful!</h3>
+      <p>Welcome to CareFirst Hospital. Your patient account has been created. You can now sign in to access your portal.</p>
+      <a href="login.html" class="btn-next" style="display:inline-flex;width:100%;text-decoration:none;justify-content:center;padding:14px 0;border-radius:14px;">
+        <span>Go to Sign In &#8594;</span>
+      </a>
+    </div>
+
+    <!-- Divider & login link (hidden on success) -->
+    <div id="loginLink">
+      <div class="divider"><span>Already registered?</span></div>
+      <p class="login-text">Have an account? <a href="login.html">Sign In</a></p>
+      <div class="back-home">
+        <a href="index.html">&#8592; Back to Hospital Home</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  /* ── Step Navigation ── */
+  var currentStep = 1;
+
+  function showStep(n) {
+    [1,2,3].forEach(function(i) {
+      document.getElementById('section'+i).classList.toggle('active', i===n);
+      var ind = document.getElementById('step'+i+'-ind');
+      ind.classList.remove('active','done');
+      if(i === n) ind.classList.add('active');
+      else if(i < n) ind.classList.add('done');
+    });
+    currentStep = n;
+  }
+
+  /* ── Step 1 Validation ── */
+  document.getElementById('next1').addEventListener('click', function(){
+    var ok = true;
+    var fn = document.getElementById('firstName').value.trim();
+    var ln = document.getElementById('lastName').value.trim();
+    var em = document.getElementById('regEmail').value.trim();
+    var ph = document.getElementById('phone').value.trim();
+    var db = document.getElementById('dob').value;
+    var gd = document.getElementById('gender').value;
+
+    setErr('firstNameError', fn ? '' : 'First name is required.');
+    setErr('lastNameError', ln ? '' : 'Last name is required.');
+    setErr('regEmailError', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em) ? '' : 'Enter a valid email.');
+    setErr('phoneError', /^[+\d\s\-]{7,15}$/.test(ph) ? '' : 'Enter a valid phone number.');
+    setErr('dobError', db ? '' : 'Date of birth is required.');
+    setErr('genderError', gd ? '' : 'Please select a gender.');
+
+    if(!fn||!ln||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)||!/^[+\d\s\-]{7,15}$/.test(ph)||!db||!gd) return;
+    showStep(2);
+  });
+
+  /* ── Step 2 (optional health — just navigate) ── */
+  document.getElementById('back2').addEventListener('click', function(){ showStep(1); });
+  document.getElementById('next2').addEventListener('click', function(){ showStep(3); });
+
+  /* ── Step 3 ── */
+  document.getElementById('back3').addEventListener('click', function(){ showStep(2); });
+
+  /* Password strength */
+  document.getElementById('regPassword').addEventListener('input', function(){
+    var pw = this.value;
+    var score = 0;
+    if(pw.length >= 8) score++;
+    if(/[A-Z]/.test(pw)) score++;
+    if(/[0-9]/.test(pw)) score++;
+    if(/[^A-Za-z0-9]/.test(pw)) score++;
+    var fill = document.getElementById('strengthFill');
+    var label = document.getElementById('strengthLabel');
+    var configs = [
+      {w:'0%',  bg:'transparent',   t:'Enter a password'},
+      {w:'25%', bg:'#ef4444',       t:'Weak'},
+      {w:'50%', bg:'#f97316',       t:'Fair'},
+      {w:'75%', bg:'#eab308',       t:'Good'},
+      {w:'100%',bg:'#22c55e',       t:'Strong ✓'},
+    ];
+    var c = configs[score] || configs[0];
+    fill.style.width = c.w;
+    fill.style.background = c.bg;
+    label.textContent = c.t;
+    label.style.color = c.bg || 'var(--text-muted)';
+  });
+
+  /* Password toggles */
+  makeToggle('pwToggle1','regPassword');
+  makeToggle('pwToggle2','confirmPassword');
+  function makeToggle(btnId, inputId){
+    var btn = document.getElementById(btnId);
+    var inp = document.getElementById(inputId);
+    btn.addEventListener('click', function(){
+      var hide = inp.type==='password';
+      inp.type = hide ? 'text' : 'password';
+      btn.classList.toggle('visible', hide);
+    });
+  }
+
+  /* ── Final Submit ── */
+  document.getElementById('signupForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var pw  = document.getElementById('regPassword').value;
+    var cpw = document.getElementById('confirmPassword').value;
+    var t   = document.getElementById('agreeTerms').checked;
+    var hc  = document.getElementById('agreeHealth').checked;
+    var ok  = true;
+
+    if(!pw || pw.length < 8){
+      setErr('regPwError','Password must be at least 8 characters.'); ok=false;
+    } else { setErr('regPwError',''); }
+
+    if(pw !== cpw){
+      setErr('confirmPwError','Passwords do not match.'); ok=false;
+    } else { setErr('confirmPwError',''); }
+
+    if(!t || !hc){
+      setErr('termsError','You must agree to all terms to continue.'); ok=false;
+    } else { setErr('termsError',''); }
+
+    if(!ok) return;
+
+    /* Save data & show success */
+    localStorage.setItem('regEmail', document.getElementById('regEmail').value.trim());
+    localStorage.setItem('regName', document.getElementById('firstName').value.trim() + ' ' + document.getElementById('lastName').value.trim());
+
+    document.getElementById('signupForm').style.display = 'none';
+    document.getElementById('stepsBar').style.display = 'none';
+    document.getElementById('loginLink').style.display = 'none';
+    document.getElementById('successScreen').classList.add('show');
+  });
+
+  function setErr(id, msg){ document.getElementById(id).textContent = msg; }
+</script>
+</body>
+</html>

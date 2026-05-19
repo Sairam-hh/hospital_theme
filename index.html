@@ -18,7 +18,7 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:var(--fb);color:var(--text);background:var(--white);line-height:1.65;overflow-x:hidden}
+body{font-family:var(--fb);color:var(--text);background:var(--white);line-height:1.65;overflow-x:hidden;max-width:100vw}
 img{max-width:100%;display:block}
 a{text-decoration:none;color:inherit}
 ul{list-style:none}
@@ -35,18 +35,18 @@ ul{list-style:none}
 /* NAVBAR */
 .navbar{background:#fff;box-shadow:0 2px 16px rgba(10,110,138,.08);position:sticky;top:0;z-index:1000;transition:box-shadow var(--tr)}
 .navbar.scrolled{box-shadow:var(--shadow-lg)}
-.navbar .container{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:72px}
-.nav-logo{display:flex;align-items:center;gap:10px}
-.nav-logo .logo-icon{width:44px;height:44px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;font-weight:700}
-.nav-logo .logo-text{font-family:var(--fh);font-size:1.35rem;color:var(--dark);font-weight:700}
+.navbar .container{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:68px;gap:8px;flex-wrap:nowrap}
+.nav-logo{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.nav-logo .logo-icon{width:40px;height:40px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;font-weight:700}
+.nav-logo .logo-text{font-family:var(--fh);font-size:1.2rem;color:var(--dark);font-weight:700;white-space:nowrap}
 .nav-logo .logo-text em{color:var(--primary);font-style:normal}
-.nav-links{display:flex;align-items:center;gap:4px}
-.nav-links a{padding:7px 15px;border-radius:var(--radius-sm);font-weight:500;color:var(--text);font-size:.93rem;transition:all var(--tr)}
+.nav-links{display:flex;align-items:center;gap:0;flex:1;justify-content:center}
+.nav-links a{padding:6px 10px;border-radius:var(--radius-sm);font-weight:500;color:var(--text);font-size:.82rem;transition:all var(--tr);white-space:nowrap}
 .nav-links a:hover,.nav-links a.active{color:var(--primary);background:var(--primary-light)}
-.nav-cta{display:flex;gap:10px;align-items:center}
-.btn-outline{border:2px solid var(--primary);color:var(--primary);padding:8px 20px;border-radius:30px;font-weight:600;font-size:.88rem;transition:all var(--tr);display:inline-flex;align-items:center;gap:6px}
+.nav-cta{display:flex;gap:6px;align-items:center;flex-shrink:0}
+.btn-outline{border:2px solid var(--primary);color:var(--primary);padding:7px 14px;border-radius:30px;font-weight:600;font-size:.8rem;transition:all var(--tr);display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
 .btn-outline:hover{background:var(--primary);color:#fff}
-.btn-primary{background:var(--primary);color:#fff;padding:9px 22px;border-radius:30px;font-weight:600;font-size:.88rem;transition:all var(--tr);border:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:var(--primary);color:#fff;padding:8px 14px;border-radius:30px;font-weight:600;font-size:.8rem;transition:all var(--tr);border:none;cursor:pointer;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
 .btn-primary:hover{background:var(--primary-dark);transform:translateY(-1px);box-shadow:0 6px 20px rgba(10,110,138,.3)}
 .btn-accent{background:var(--accent);color:var(--dark);padding:12px 28px;border-radius:30px;font-weight:700;font-size:.95rem;transition:all var(--tr);display:inline-flex;align-items:center;gap:8px}
 .btn-accent:hover{background:#d48f00;transform:translateY(-1px)}
@@ -54,13 +54,57 @@ ul{list-style:none}
 .btn-white:hover{background:var(--accent);color:#000}
 .btn-ghost{border:2px solid rgba(255,255,255,.7);color:#fff;padding:12px 28px;border-radius:30px;font-weight:600;font-size:.95rem;transition:all var(--tr)}
 .btn-ghost:hover{background:rgba(255,255,255,.15)}
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;z-index:1100;flex-shrink:0}
 .hamburger span{width:24px;height:2px;background:var(--primary);border-radius:2px;transition:all var(--tr)}
-.mobile-nav{display:none;flex-direction:column;background:#fff;padding:20px;border-top:1px solid var(--border);box-shadow:var(--shadow)}
+.hamburger.hidden{display:none!important}
+
+/* FULL-SCREEN MOBILE NAV */
+.mobile-nav{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#fff;
+  z-index:1050;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:0;
+  padding:40px 24px;
+  overflow-y:auto;
+}
 .mobile-nav.open{display:flex}
-.mobile-nav a{padding:12px 16px;font-weight:500;border-radius:var(--radius-sm);color:var(--text);font-size:.95rem;transition:all var(--tr)}
+.mobile-nav-close{
+  position:absolute;
+  top:20px;
+  right:20px;
+  width:42px;height:42px;
+  border-radius:50%;
+  background:var(--primary-light);
+  border:none;cursor:pointer;
+  font-size:22px;color:var(--primary);
+  display:flex;align-items:center;justify-content:center;
+}
+.mobile-nav a{
+  width:100%;max-width:340px;
+  padding:16px 24px;
+  font-size:1.2rem;
+  font-weight:600;
+  border-radius:var(--radius-sm);
+  color:var(--text);
+  text-align:center;
+  transition:all var(--tr);
+  border-bottom:1px solid var(--border);
+}
+.mobile-nav a:last-of-type{border-bottom:none}
 .mobile-nav a:hover{background:var(--primary-light);color:var(--primary)}
-.mobile-nav .btn-primary{margin-top:8px;justify-content:center}
+.mobile-nav .btn-primary{
+  margin-top:20px;
+  width:100%;max-width:340px;
+  justify-content:center;
+  font-size:1rem;
+  padding:14px 28px;
+  border-bottom:none;
+}
 
 /* CONTAINER */
 .container{max-width:1180px;margin:0 auto;padding:0 20px}
@@ -116,7 +160,6 @@ ul{list-style:none}
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
 .about-images{position:relative;padding-bottom:40px}
 .about-img-main{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-lg);width:100%;aspect-ratio:4/3;object-fit:cover}
-/* Gradient placeholder for images */
 .img-placeholder{border-radius:var(--radius);width:100%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:3rem;color:rgba(255,255,255,.7);font-weight:700;letter-spacing:2px}
 .img-ph-hospital{background:linear-gradient(135deg,#0a6e8a 0%,#0e9aad 50%,#064d63 100%)}
 .img-ph-lab{background:linear-gradient(135deg,#1a7fa0 0%,#0a6e8a 100%)}
@@ -253,8 +296,8 @@ ul{list-style:none}
 .newsletter-text h2{font-family:var(--fh);font-size:1.8rem;margin-bottom:8px}
 .newsletter-text p{opacity:.8}
 .newsletter-form{display:flex;max-width:420px;width:100%;flex:1}
-.newsletter-form input{flex:1;padding:13px 20px;border:none;outline:none;border-radius:30px 0 0 30px;font-family:var(--fb);font-size:.9rem}
-.newsletter-form button{padding:13px 26px;background:var(--accent);color:var(--dark);border:none;border-radius:0 30px 30px 0;font-weight:700;cursor:pointer;font-family:var(--fb);font-size:.9rem;transition:background var(--tr)}
+.newsletter-form input{flex:1;padding:13px 20px;border:none;outline:none;border-radius:30px 0 0 30px;font-family:var(--fb);font-size:.9rem;min-width:0}
+.newsletter-form button{padding:13px 26px;background:var(--accent);color:var(--dark);border:none;border-radius:0 30px 30px 0;font-weight:700;cursor:pointer;font-family:var(--fb);font-size:.9rem;transition:background var(--tr);white-space:nowrap}
 .newsletter-form button:hover{background:#d48f00}
 
 /* FOOTER */
@@ -286,33 +329,234 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
 #scrollTop.show{opacity:1;pointer-events:all}
 #scrollTop:hover{background:var(--primary-dark);transform:translateY(-3px)}
 
-/* RESPONSIVE */
+/* ============ SIGNUP MODAL ============ */
+.signup-overlay{
+  display:none;position:fixed;inset:0;z-index:2000;
+  background:rgba(6,77,99,.55);backdrop-filter:blur(4px);
+  align-items:center;justify-content:center;padding:20px;
+}
+.signup-overlay.open{display:flex}
+.signup-modal{
+  background:#fff;border-radius:20px;width:100%;max-width:480px;
+  box-shadow:0 24px 80px rgba(10,110,138,.25);
+  overflow:hidden;animation:slideUp .4s cubic-bezier(.4,0,.2,1) both;
+  max-height:90vh;overflow-y:auto;
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+.signup-header{
+  background:linear-gradient(120deg,var(--primary-dark),var(--primary));
+  color:#fff;padding:32px 32px 24px;text-align:center;position:relative;
+}
+.signup-header .close-modal{
+  position:absolute;top:16px;right:16px;background:rgba(255,255,255,.2);
+  border:none;color:#fff;width:32px;height:32px;border-radius:50%;
+  font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background var(--tr);
+}
+.signup-header .close-modal:hover{background:rgba(255,255,255,.35)}
+.signup-header .logo-icon{width:52px;height:52px;background:rgba(255,255,255,.2);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 14px}
+.signup-header h2{font-family:var(--fh);font-size:1.5rem;margin-bottom:6px}
+.signup-header p{font-size:.88rem;opacity:.82}
+.signup-body{padding:28px 32px 32px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:.82rem;font-weight:600;color:var(--dark);margin-bottom:6px}
+.form-group input,.form-group select{
+  width:100%;padding:11px 16px;border:2px solid var(--border);border-radius:var(--radius-sm);
+  font-family:var(--fb);font-size:.9rem;color:var(--text);
+  transition:border-color var(--tr),box-shadow var(--tr);outline:none;background:#fff;
+}
+.form-group input:focus,.form-group select:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(10,110,138,.1)}
+.form-group input::placeholder{color:#aab8c2}
+.form-check{display:flex;align-items:flex-start;gap:10px;margin-bottom:20px}
+.form-check input[type=checkbox]{width:18px;height:18px;accent-color:var(--primary);flex-shrink:0;margin-top:2px}
+.form-check label{font-size:.82rem;color:var(--gray);line-height:1.5}
+.form-check a{color:var(--primary);font-weight:600}
+.btn-signup{
+  width:100%;padding:14px;background:var(--primary);color:#fff;border:none;
+  border-radius:30px;font-size:1rem;font-weight:700;cursor:pointer;
+  font-family:var(--fb);transition:all var(--tr);display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-signup:hover{background:var(--primary-dark);transform:translateY(-1px);box-shadow:0 8px 24px rgba(10,110,138,.3)}
+.signup-divider{text-align:center;color:var(--gray);font-size:.82rem;margin:18px 0;position:relative}
+.signup-divider::before,.signup-divider::after{content:'';position:absolute;top:50%;width:38%;height:1px;background:var(--border)}
+.signup-divider::before{left:0}.signup-divider::after{right:0}
+.social-signup{display:flex;gap:12px;margin-bottom:20px}
+.social-signup button{
+  flex:1;padding:10px;border:2px solid var(--border);border-radius:var(--radius-sm);
+  background:#fff;font-size:.85rem;font-weight:600;color:var(--text);
+  cursor:pointer;transition:all var(--tr);display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.social-signup button:hover{border-color:var(--primary);background:var(--primary-light)}
+.signup-footer-text{text-align:center;font-size:.85rem;color:var(--gray)}
+.signup-footer-text a{color:var(--primary);font-weight:600}
+
+/* ============ RESPONSIVE ============ */
+
+/* Medium — tablet */
+@media(max-width:1024px){
+  .nav-links a{padding:6px 8px;font-size:.78rem}
+  .nav-cta .btn-outline{display:none} /* hide Patient Login to save space */
+}
+
 @media(max-width:900px){
   .about-grid{grid-template-columns:1fr}
   .about-images{margin-bottom:60px}
   .footer-grid{grid-template-columns:1fr 1fr}
   .testi-card{flex:0 0 calc(50% - 12px)}
+  .form-row{grid-template-columns:1fr}
 }
-@media(max-width:700px){
+
+/* Mobile */
+@media(max-width:768px){
+  /* hide desktop nav, show hamburger */
   .nav-links,.nav-cta{display:none}
   .hamburger{display:flex}
-  .hero-slider{height:80vh}
-  .slide-content{padding:0 24px}
-  .stats-bar .container{flex-direction:column}
-  .stat-item{border-right:none;border-bottom:1px solid rgba(255,255,255,.15)}
-  .footer-grid{grid-template-columns:1fr}
+
+  /* prevent ANY horizontal overflow */
+  html,body{overflow-x:hidden;width:100%}
+  *{max-width:100%;box-sizing:border-box}
+
+  /* topbar — stack and hide overflow */
+  .topbar .container{flex-direction:column;align-items:flex-start;gap:6px;overflow:hidden}
+  .topbar .container>div:first-child span:first-child{display:none} /* hide address on mobile */
+
+  /* hero */
+  .hero-slider{height:75vh;min-height:400px}
+  .slide-content{padding:0 20px;max-width:100%}
+  .slide-content h1{font-size:clamp(1.5rem,6vw,2.2rem)}
+  .slide-content p{font-size:.9rem;max-width:100%}
+  .slide-btns{gap:10px;flex-wrap:wrap}
+  .btn-white,.btn-ghost{padding:10px 16px;font-size:.82rem}
+  .slider-dots{left:20px;bottom:16px}
+  .slider-arrows{right:20px;bottom:16px}
+
+  /* stats — full-width stack */
+  .stats-bar .container{flex-direction:column;width:100%}
+  .stat-item{border-right:none;border-bottom:1px solid rgba(255,255,255,.15);width:100%;flex:none}
+  .stat-item:last-child{border-bottom:none}
+
+  /* sections */
+  .section-pad{padding:60px 0}
+  .container{padding:0 16px}
+
+  /* services grid — single column on very small */
+  .services-grid{grid-template-columns:1fr}
+
+  /* doctors grid */
+  .doctors-grid{grid-template-columns:1fr 1fr}
+
+  /* about thumb hidden on mobile to avoid overflow */
+  .about-img-thumb{display:none}
+
+  /* testimonials */
   .testi-card{flex:0 0 100%}
-  .cta-inner{flex-direction:column;text-align:center}
-  .cta-phone a{justify-content:center}
-  .newsletter .container{flex-direction:column}
-  .newsletter-form{max-width:100%}
-  .slider-dots{left:20px}
-  .slider-arrows{right:20px}
+  .testi-track{gap:16px}
+
+  /* CTA banner */
+  .cta-inner{flex-direction:column;text-align:center;gap:20px}
+  .cta-phone a{justify-content:center;font-size:1.5rem}
+
+  /* newsletter */
+  .newsletter .container{flex-direction:column;gap:24px}
+  .newsletter-form{max-width:100%;width:100%}
+  .newsletter-form input{min-width:0;font-size:.85rem}
+
+  /* pricing */
+  .pricing-grid{grid-template-columns:1fr}
+
+  /* blog */
+  .blog-grid{grid-template-columns:1fr}
+
+  /* footer */
+  .footer-grid{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;text-align:center}
+
+  /* signup modal */
+  .signup-overlay{padding:12px}
+  .signup-modal{max-height:95vh}
+  .signup-body{padding:20px 16px 24px}
+  .signup-header{padding:24px 16px 18px}
+  .social-signup{flex-direction:column}
+}
+
+@media(max-width:400px){
+  .doctors-grid{grid-template-columns:1fr}
+  .features-list{grid-template-columns:1fr}
+  .slide-btns{flex-direction:column;align-items:flex-start}
 }
 </style>
 
 </head>
-<body><div class="topbar">
+<body>
+
+<!-- ===== SIGNUP MODAL ===== -->
+<div class="signup-overlay" id="signupOverlay">
+  <div class="signup-modal">
+    <div class="signup-header">
+      <button class="close-modal" id="closeSignup" aria-label="Close">&#10005;</button>
+      <div class="logo-icon">&#10084;</div>
+      <h2>Create Your Account</h2>
+      <p>Join CareFirst and manage your health journey online</p>
+    </div>
+    <div class="signup-body">
+      <div class="social-signup">
+        <button>&#127758; Google</button>
+        <button>f Facebook</button>
+      </div>
+      <div class="signup-divider">or sign up with email</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="su-fname">First Name</label>
+          <input type="text" id="su-fname" placeholder="Arjun" />
+        </div>
+        <div class="form-group">
+          <label for="su-lname">Last Name</label>
+          <input type="text" id="su-lname" placeholder="Sharma" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="su-email">Email Address</label>
+        <input type="email" id="su-email" placeholder="you@example.com" />
+      </div>
+      <div class="form-group">
+        <label for="su-phone">Phone Number</label>
+        <input type="tel" id="su-phone" placeholder="+91 98765 43210" />
+      </div>
+      <div class="form-group">
+        <label for="su-dob">Date of Birth</label>
+        <input type="date" id="su-dob" />
+      </div>
+      <div class="form-group">
+        <label for="su-gender">Gender</label>
+        <select id="su-gender">
+          <option value="">Select gender</option>
+          <option>Male</option>
+          <option>Female</option>
+          <option>Non-binary</option>
+          <option>Prefer not to say</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="su-pass">Password</label>
+        <input type="password" id="su-pass" placeholder="Min. 8 characters" />
+      </div>
+      <div class="form-group">
+        <label for="su-confirm">Confirm Password</label>
+        <input type="password" id="su-confirm" placeholder="Repeat password" />
+      </div>
+      <div class="form-check">
+        <input type="checkbox" id="su-terms" />
+        <label for="su-terms">I agree to CareFirst's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+      </div>
+      <button class="btn-signup" onclick="handleSignup()">&#10084; Create My Account</button>
+      <p class="signup-footer-text" style="margin-top:16px;">Already have an account? <a href="login.html">Sign In</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TOPBAR ===== -->
+<div class="topbar">
   <div class="container">
     <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
       <span>&#128205; 123 Health Avenue, Chennai, Tamil Nadu, India</span>
@@ -328,26 +572,47 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
       </div>
     </div>
   </div>
-</div><nav class="navbar">
+</div>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
   <div class="container">
     <a class="nav-logo" href="index.html">
       <div class="logo-icon">&#10084;</div>
       <span class="logo-text">Care<em>First</em></span>
     </a>
-    <div class="nav-links"><a href="index.html" class="active">Home</a><a href="about.html" >About Us</a><a href="service.html" >Services</a><a href="departments.html" >Departments</a><a href="blog.html" >Health Blog</a><a href="contact.html" >Contact</a></div>
+    <div class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="service.html">Services</a>
+      <a href="departments.html">Departments</a>
+      <a href="blog.html">Health Blog</a>
+      <a href="contact.html">Contact</a>
+    </div>
     <div class="nav-cta">
       <a href="login.html" class="btn-outline">Patient Login</a>
+      <button class="btn-primary" onclick="openSignup()">&#128221; Sign Up</button>
       <a href="appointment.html" class="btn-primary">&#128197; Book Appointment</a>
     </div>
-    <div class="hamburger"><span></span><span></span><span></span></div>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
   </div>
-  <div class="mobile-nav">
-    <a href="index.html">Home</a><a href="about.html">About Us</a><a href="service.html">Services</a><a href="departments.html">Departments</a><a href="blog.html">Health Blog</a><a href="contact.html">Contact</a>
+
+  <!-- FULL-SCREEN MOBILE NAV -->
+  <div class="mobile-nav" id="mobileNav">
+    <button class="mobile-nav-close" id="mobileNavClose">&#10005;</button>
+    <a href="index.html">Home</a>
+    <a href="about.html">About Us</a>
+    <a href="service.html">Services</a>
+    <a href="departments.html">Departments</a>
+    <a href="blog.html">Health Blog</a>
+    <a href="contact.html">Contact</a>
+    <a href="login.html">Patient Login</a>
+    <button class="btn-primary" onclick="openSignup();closeMobileNav()">&#128221; Sign Up</button>
     <a href="appointment.html" class="btn-primary">&#128197; Book Appointment</a>
   </div>
 </nav>
 
-<!-- HERO SLIDER -->
+<!-- ===== HERO SLIDER ===== -->
 <section class="hero-slider">
   <div class="slide active">
     <div class="slide-bg" style="background:linear-gradient(120deg,#064d63 0%,#0a6e8a 60%,#0e9aad 100%);"></div>
@@ -357,7 +622,7 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
       <h1>Advanced Care<br>for Every Patient</h1>
       <p>Experience compassionate, cutting-edge medical care delivered by over 200 specialist doctors across 30+ departments.</p>
       <div class="slide-btns">
-        <a href="services.html" class="btn-white">&#10010; Our Services</a>
+        <a href="service.html" class="btn-white">&#10010; Our Services</a>
         <a href="appointment.html" class="btn-ghost">Book Appointment</a>
       </div>
     </div>
@@ -397,7 +662,7 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
   </div>
 </section>
 
-<!-- STATS BAR -->
+<!-- ===== STATS BAR ===== -->
 <div class="stats-bar">
   <div class="container">
     <div class="stat-item"><div class="stat-icon">&#128084;</div><div class="stat-text"><strong><span data-target="250">0</span>+</strong><span>Specialist Doctors</span></div></div>
@@ -408,7 +673,7 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
   </div>
 </div>
 
-<!-- ABOUT -->
+<!-- ===== ABOUT ===== -->
 <section class="section-pad">
   <div class="container">
     <div class="about-grid">
@@ -438,7 +703,7 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
   </div>
 </section>
 
-<!-- SERVICES -->
+<!-- ===== SERVICES ===== -->
 <section class="section-pad bg-light">
   <div class="container">
     <div class="section-header reveal">
@@ -448,14 +713,14 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
       <div class="divider"></div>
     </div>
     <div class="services-grid">
-      <div class="service-card reveal"><div class="service-icon">&#10084;</div><h3>Cardiology &amp; Heart Care</h3><p>Advanced cardiac care including angioplasty, bypass surgery, and echocardiography for comprehensive heart health management.</p><a href="services.html" class="service-link">Learn More &#8594;</a></div>
-      <div class="service-card reveal"><div class="service-icon">&#129504;</div><h3>Neurology &amp; Brain Science</h3><p>Expert neurological care for stroke, epilepsy, Parkinson's and complex brain disorders with advanced neuroimaging.</p><a href="services.html" class="service-link">Learn More &#8594;</a></div>
-      <div class="service-card reveal"><div class="service-icon">&#128118;</div><h3>Paediatrics &amp; Child Care</h3><p>Specialised child healthcare from newborns to adolescents with a dedicated NICU, paediatric ICU, and child-friendly facilities.</p><a href="services.html" class="service-link">Learn More &#8594;</a></div>
-      <div class="service-card reveal"><div class="service-icon">&#129460;</div><h3>Orthopaedics &amp; Spine</h3><p>Minimally invasive joint replacements, spine surgery and sports medicine for active recovery and long-term mobility.</p><a href="services.html" class="service-link">Learn More &#8594;</a></div>
-      <div class="service-card reveal"><div class="service-icon">&#128065;</div><h3>Ophthalmology</h3><p>Comprehensive eye care including LASIK, cataract surgery, retina treatment and diabetic eye screenings.</p><a href="services.html" class="service-link">Learn More &#8594;</a></div>
-      <div class="service-card reveal"><div class="service-icon">&#128300;</div><h3>Oncology &amp; Cancer Care</h3><p>Holistic cancer treatment programs including chemotherapy, radiation, immunotherapy, and palliative care.</p><a href="services.html" class="service-link">Learn More &#8594;</a></div>
-      <div class="service-card reveal"><div class="service-icon">&#9792;</div><h3>Women's Health</h3><p>Gynaecology, maternity, fertility and breast health services tailored to every stage of a woman's life.</p><a href="services.html" class="service-link">Learn More &#8594;</a></div>
-      <div class="service-card reveal"><div class="service-icon">&#129514;</div><h3>Diagnostics &amp; Lab</h3><p>NABL-accredited diagnostic centre with over 2,000 tests, digital radiology, and 24-hour pathology services.</p><a href="services.html" class="service-link">Learn More &#8594;</a></div>
+      <div class="service-card reveal"><div class="service-icon">&#10084;</div><h3>Cardiology &amp; Heart Care</h3><p>Advanced cardiac care including angioplasty, bypass surgery, and echocardiography for comprehensive heart health management.</p><a href="service.html" class="service-link">Learn More &#8594;</a></div>
+      <div class="service-card reveal"><div class="service-icon">&#129504;</div><h3>Neurology &amp; Brain Science</h3><p>Expert neurological care for stroke, epilepsy, Parkinson's and complex brain disorders with advanced neuroimaging.</p><a href="service.html" class="service-link">Learn More &#8594;</a></div>
+      <div class="service-card reveal"><div class="service-icon">&#128118;</div><h3>Paediatrics &amp; Child Care</h3><p>Specialised child healthcare from newborns to adolescents with a dedicated NICU, paediatric ICU, and child-friendly facilities.</p><a href="service.html" class="service-link">Learn More &#8594;</a></div>
+      <div class="service-card reveal"><div class="service-icon">&#129460;</div><h3>Orthopaedics &amp; Spine</h3><p>Minimally invasive joint replacements, spine surgery and sports medicine for active recovery and long-term mobility.</p><a href="service.html" class="service-link">Learn More &#8594;</a></div>
+      <div class="service-card reveal"><div class="service-icon">&#128065;</div><h3>Ophthalmology</h3><p>Comprehensive eye care including LASIK, cataract surgery, retina treatment and diabetic eye screenings.</p><a href="service.html" class="service-link">Learn More &#8594;</a></div>
+      <div class="service-card reveal"><div class="service-icon">&#128300;</div><h3>Oncology &amp; Cancer Care</h3><p>Holistic cancer treatment programs including chemotherapy, radiation, immunotherapy, and palliative care.</p><a href="service.html" class="service-link">Learn More &#8594;</a></div>
+      <div class="service-card reveal"><div class="service-icon">&#9792;</div><h3>Women's Health</h3><p>Gynaecology, maternity, fertility and breast health services tailored to every stage of a woman's life.</p><a href="service.html" class="service-link">Learn More &#8594;</a></div>
+      <div class="service-card reveal"><div class="service-icon">&#129514;</div><h3>Diagnostics &amp; Lab</h3><p>NABL-accredited diagnostic centre with over 2,000 tests, digital radiology, and 24-hour pathology services.</p><a href="service.html" class="service-link">Learn More &#8594;</a></div>
     </div>
     <div style="text-align:center;margin-top:40px;" class="reveal">
       <a href="service.html" class="btn-primary">&#9776; View All Services</a>
@@ -463,7 +728,7 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
   </div>
 </section>
 
-<!-- CTA BANNER -->
+<!-- ===== CTA BANNER ===== -->
 <section class="cta-banner">
   <div class="container">
     <div class="cta-inner">
@@ -474,13 +739,13 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
       </div>
       <div class="cta-phone">
         <span>Emergency &amp; Helpline</span>
-        <a href="tel:+911234567890">&#128222; +91 1234567890</a>
+        <a href="tel:+911234567890">&#128222; +91 7995358828</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- DOCTORS -->
+<!-- ===== DOCTORS ===== -->
 <section class="section-pad">
   <div class="container">
     <div class="section-header reveal">
@@ -525,7 +790,7 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
   </div>
 </section>
 
-<!-- PRICING -->
+<!-- ===== PRICING ===== -->
 <section class="section-pad bg-light">
   <div class="container">
     <div class="section-header reveal">
@@ -570,7 +835,7 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
+<!-- ===== TESTIMONIALS ===== -->
 <section class="section-pad testimonials-section">
   <div class="container">
     <div class="section-header reveal">
@@ -595,7 +860,7 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
   </div>
 </section>
 
-<!-- BLOG -->
+<!-- ===== BLOG ===== -->
 <section class="section-pad">
   <div class="container">
     <div class="section-header reveal">
@@ -623,6 +888,8 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
     </div>
   </div>
 </section>
+
+<!-- ===== NEWSLETTER ===== -->
 <section class="newsletter">
   <div class="container">
     <div class="newsletter-text">
@@ -634,7 +901,10 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
       <button>Subscribe</button>
     </div>
   </div>
-</section><footer>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
@@ -689,9 +959,37 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
     </div>
   </div>
 </footer>
+
 <div id="scrollTop">&#8679;</div>
+
 <script>
-// NAVBAR SCROLL
+// ===== SIGNUP MODAL =====
+function openSignup(){
+  document.getElementById('signupOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeSignup(){
+  document.getElementById('signupOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.getElementById('closeSignup').addEventListener('click',closeSignup);
+document.getElementById('signupOverlay').addEventListener('click',function(e){
+  if(e.target===this)closeSignup();
+});
+function handleSignup(){
+  const fname=document.getElementById('su-fname').value.trim();
+  const email=document.getElementById('su-email').value.trim();
+  const pass=document.getElementById('su-pass').value;
+  const confirm=document.getElementById('su-confirm').value;
+  const terms=document.getElementById('su-terms').checked;
+  if(!fname||!email||!pass){alert('Please fill in all required fields.');return;}
+  if(pass!==confirm){alert('Passwords do not match.');return;}
+  if(!terms){alert('Please accept the Terms of Service.');return;}
+  alert('Account created successfully! Welcome to CareFirst, '+fname+'.');
+  closeSignup();
+}
+
+// ===== NAVBAR SCROLL =====
 const navbar=document.querySelector('.navbar');
 const scrollTopBtn=document.getElementById('scrollTop');
 window.addEventListener('scroll',()=>{
@@ -700,24 +998,29 @@ window.addEventListener('scroll',()=>{
 });
 if(scrollTopBtn)scrollTopBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 
-// HAMBURGER
-const hamburger=document.querySelector('.hamburger');
-const mobileNav=document.querySelector('.mobile-nav');
-if(hamburger&&mobileNav){
-  hamburger.addEventListener('click',()=>{
-    mobileNav.classList.toggle('open');
-    const spans=hamburger.querySelectorAll('span');
-    if(mobileNav.classList.contains('open')){
-      spans[0].style.transform='rotate(45deg) translate(5px,5px)';
-      spans[1].style.opacity='0';
-      spans[2].style.transform='rotate(-45deg) translate(5px,-5px)';
-    } else {
-      spans.forEach(s=>{s.style.transform='';s.style.opacity='';});
-    }
-  });
-}
+// ===== MOBILE NAV (FULLSCREEN) =====
+const hamburger=document.getElementById('hamburger');
+const mobileNav=document.getElementById('mobileNav');
+const mobileNavClose=document.getElementById('mobileNavClose');
 
-// HERO SLIDER
+function openMobileNav(){
+  mobileNav.classList.add('open');
+  hamburger.classList.add('hidden');
+  document.body.style.overflow='hidden';
+}
+function closeMobileNav(){
+  mobileNav.classList.remove('open');
+  hamburger.classList.remove('hidden');
+  document.body.style.overflow='';
+  const spans=hamburger.querySelectorAll('span');
+  spans.forEach(s=>{s.style.transform='';s.style.opacity='';});
+}
+if(hamburger)hamburger.addEventListener('click',openMobileNav);
+if(mobileNavClose)mobileNavClose.addEventListener('click',closeMobileNav);
+// close when a link is tapped
+mobileNav.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMobileNav));
+
+// ===== HERO SLIDER =====
 const slides=document.querySelectorAll('.slide');
 const dots=document.querySelectorAll('.dot');
 let cur=0,auto;
@@ -735,7 +1038,7 @@ if(slides.length){
   document.querySelector('.next-btn')?.addEventListener('click',()=>{clearInterval(auto);goTo(cur+1);auto=setInterval(()=>goTo(cur+1),5200);});
 }
 
-// TESTIMONIALS SLIDER
+// ===== TESTIMONIALS SLIDER =====
 const track=document.querySelector('.testi-track');
 let tesCur=0;
 function updateTesti(dir){
@@ -750,7 +1053,7 @@ function updateTesti(dir){
 document.querySelector('.testi-prev')?.addEventListener('click',()=>updateTesti(-1));
 document.querySelector('.testi-next')?.addEventListener('click',()=>updateTesti(1));
 
-// REVEAL ON SCROLL
+// ===== REVEAL ON SCROLL =====
 const reveals=document.querySelectorAll('.reveal');
 const obs=new IntersectionObserver((entries)=>{
   entries.forEach((e,i)=>{
@@ -759,7 +1062,7 @@ const obs=new IntersectionObserver((entries)=>{
 },{threshold:.12});
 reveals.forEach(r=>obs.observe(r));
 
-// COUNTER ANIMATION
+// ===== COUNTER ANIMATION =====
 function animCount(el){
   const target=parseInt(el.dataset.target);
   const step=target/120;let c=0;
@@ -770,7 +1073,7 @@ const cObs=new IntersectionObserver((entries)=>{
 },{threshold:.3});
 document.querySelectorAll('.stats-bar').forEach(el=>cObs.observe(el));
 
-// DEPT TABS
+// ===== DEPT TABS =====
 document.querySelectorAll('.dept-tab').forEach(tab=>{
   tab.addEventListener('click',()=>{
     document.querySelectorAll('.dept-tab').forEach(t=>t.classList.remove('active'));
@@ -782,12 +1085,11 @@ document.querySelectorAll('.dept-tab').forEach(tab=>{
   });
 });
 
-// ACTIVE NAV LINK
+// ===== ACTIVE NAV LINK =====
 const page=window.location.pathname.split('/').pop()||'index.html';
 document.querySelectorAll('.nav-links a,.mobile-nav a').forEach(a=>{
   if(a.getAttribute('href')===page)a.classList.add('active');
 });
 </script>
-
 </body>
 </html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Doctor Dashboard | CareFirst Hospital</title>
+  <style>
+    :root{--primary:#0a6e8a;--primary-dark:#064d63;--primary-mid:#0e8fa8;--accent:#f0a500;--white:#fff;--light:#f0f8fb;--border:#d0e8f0;--text:#2c3e50;--gray:#6b8fa3;--radius:14px;--radius-sm:8px;--shadow:0 4px 20px rgba(10,110,138,.10);--shadow-lg:0 12px 40px rgba(10,110,138,.18);}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html,body{width:100%;min-height:100vh;background:var(--light);font-family:'Segoe UI',system-ui,sans-serif;color:var(--text);}
+    .sidebar{position:fixed;left:0;top:0;bottom:0;width:250px;background:#03222d;display:flex;flex-direction:column;z-index:100;transition:transform .3s ease;}
+    .sidebar-logo{padding:24px 20px 20px;border-bottom:1px solid rgba(255,255,255,.10);}
+    .s-logo-ring{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--primary-mid));margin-right:10px;}
+    .s-logo-ring svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
+    .s-logo-text{font-size:1.15rem;font-weight:700;color:#fff;vertical-align:middle;}
+    .s-logo-text em{color:var(--accent);font-style:normal;}
+    .sidebar-user{padding:18px 20px;border-bottom:1px solid rgba(255,255,255,.08);}
+    .s-avatar{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#1d6a3e,#22c55e);display:flex;align-items:center;justify-content:center;font-size:19px;color:#fff;font-weight:700;margin-bottom:8px;}
+    .s-name{font-size:.9rem;font-weight:700;color:#fff;}
+    .s-role{font-size:.75rem;color:rgba(255,255,255,.55);background:rgba(34,197,94,.18);padding:2px 10px;border-radius:20px;display:inline-block;margin-top:3px;}
+    .sidebar-nav{flex:1;padding:14px 12px;overflow-y:auto;}
+    .nav-section-label{font-size:.68rem;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:rgba(255,255,255,.35);padding:10px 8px 6px;}
+    .nav-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-sm);color:rgba(255,255,255,.65);font-size:.88rem;font-weight:500;cursor:pointer;transition:all .2s;margin-bottom:2px;text-decoration:none;}
+    .nav-item svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0;}
+    .nav-item:hover,.nav-item.active{background:rgba(255,255,255,.10);color:#fff;}
+    .nav-item.active{background:linear-gradient(90deg,rgba(34,197,94,.25),rgba(34,197,94,.08));border-left:3px solid #22c55e;}
+    .sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.08);}
+    .logout-btn{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.55);font-size:.85rem;cursor:pointer;text-decoration:none;transition:color .2s;}
+    .logout-btn:hover{color:#fc8181;}
+    .logout-btn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;}
+    /* TOPBAR */
+    .topbar{position:fixed;top:0;left:250px;right:0;height:64px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;z-index:90;box-shadow:0 2px 12px rgba(10,110,138,.06);}
+    .topbar-left{display:flex;align-items:center;gap:14px;}
+    .menu-toggle{display:none;background:none;border:none;cursor:pointer;padding:6px;color:var(--primary);}
+    .menu-toggle svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;}
+    .page-title{font-size:1.1rem;font-weight:700;color:var(--primary-dark);}
+    .topbar-right{display:flex;align-items:center;gap:14px;}
+    .notif-btn{position:relative;background:var(--light);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+    .notif-btn svg{width:18px;height:18px;stroke:var(--primary);fill:none;stroke-width:2;stroke-linecap:round;}
+    .notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:#ef4444;border-radius:50%;border:2px solid #fff;}
+    .topbar-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#1d6a3e,#22c55e);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.9rem;cursor:pointer;}
+    .main{margin-left:250px;margin-top:64px;padding:28px;min-height:calc(100vh - 64px);}
+    /* GREETING */
+    .greeting-card{background:linear-gradient(120deg,#03222d 0%,#064d3f 50%,#0a6e5c 100%);border-radius:var(--radius);padding:28px 32px;color:#fff;margin-bottom:24px;position:relative;overflow:hidden;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+    .greeting-card::before{content:'';position:absolute;right:-40px;top:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.05);}
+    .greeting-text h2{font-size:1.4rem;font-weight:700;margin-bottom:4px;}
+    .greeting-text p{font-size:.88rem;opacity:.80;}
+    .greeting-actions{display:flex;gap:10px;flex-wrap:wrap;position:relative;z-index:2;}
+    .btn-green{background:#22c55e;color:#fff;padding:9px 18px;border-radius:30px;font-size:.82rem;font-weight:700;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;}
+    .btn-outline-w{border:2px solid rgba(255,255,255,.5);color:#fff;padding:9px 18px;border-radius:30px;font-size:.82rem;font-weight:600;background:transparent;cursor:pointer;}
+    /* STATS */
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;}
+    .stat-card{background:#fff;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);border:1px solid var(--border);display:flex;align-items:center;gap:14px;transition:all .2s;}
+    .stat-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);}
+    .stat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+    .si-green{background:#dcfce7;color:#16a34a;} .si-blue{background:#dbeafe;color:#1d4ed8;}
+    .si-amber{background:#fef3c7;color:#d97706;} .si-teal{background:#ccfbf1;color:#0d9488;}
+    .stat-info strong{display:block;font-size:1.5rem;font-weight:700;color:var(--primary-dark);line-height:1;}
+    .stat-info span{font-size:.78rem;color:var(--gray);}
+    /* PANELS */
+    .grid-2{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;margin-bottom:20px;}
+    .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:20px;}
+    .panel{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden;}
+    .panel-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--border);}
+    .panel-head h3{font-size:.97rem;font-weight:700;color:var(--primary-dark);}
+    .panel-head a{font-size:.78rem;color:var(--primary);text-decoration:none;font-weight:600;}
+    .panel-body{padding:16px 20px;}
+    /* SCHEDULE */
+    .sched-item{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border);}
+    .sched-item:last-child{border-bottom:none;}
+    .sched-time{min-width:68px;font-size:.78rem;font-weight:700;color:var(--primary);}
+    .sched-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-mid));display:flex;align-items:center;justify-content:center;color:#fff;font-size:.72rem;font-weight:700;flex-shrink:0;}
+    .sched-info{flex:1;}
+    .sched-info strong{display:block;font-size:.85rem;font-weight:700;color:var(--primary-dark);}
+    .sched-info span{font-size:.74rem;color:var(--gray);}
+    .badge{padding:3px 9px;border-radius:20px;font-size:.68rem;font-weight:700;white-space:nowrap;}
+    .badge-green{background:#dcfce7;color:#16a34a;} .badge-blue{background:#dbeafe;color:#1d4ed8;}
+    .badge-amber{background:#fef3c7;color:#b45309;} .badge-red{background:#ffe4e6;color:#dc2626;}
+    /* PATIENT TABLE */
+    .table-wrap{overflow-x:auto;}
+    table{width:100%;border-collapse:collapse;font-size:.83rem;}
+    thead th{text-align:left;padding:10px 14px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--gray);background:var(--light);border-bottom:1px solid var(--border);}
+    tbody td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text);}
+    tbody tr:last-child td{border-bottom:none;}
+    tbody tr:hover td{background:#f8fdff;}
+    .action-link{color:var(--primary);font-weight:600;text-decoration:none;font-size:.78rem;margin-right:8px;}
+    /* MINI STAT */
+    .mini-stat{background:var(--light);border-radius:var(--radius-sm);padding:14px 16px;border:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+    .mini-icon{font-size:24px;}
+    .mini-label{font-size:.74rem;color:var(--gray);}
+    .mini-val{font-size:1.2rem;font-weight:700;color:var(--primary-dark);}
+    /* CALENDAR PLACEHOLDER */
+    .cal-placeholder{background:var(--light);border-radius:var(--radius-sm);padding:20px;text-align:center;border:1px dashed var(--border);}
+    .cal-placeholder .cal-icon{font-size:3rem;margin-bottom:8px;}
+    .cal-placeholder p{font-size:.82rem;color:var(--gray);}
+    /* OVERLAY */
+    .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:99;}
+    .overlay.show{display:block;}
+    /* RESPONSIVE */
+    @media(max-width:900px){.stats-row{grid-template-columns:repeat(2,1fr);}.grid-2,.grid-3{grid-template-columns:1fr;}}
+    @media(max-width:768px){.sidebar{transform:translateX(-100%);}.sidebar.open{transform:translateX(0);}.topbar{left:0;}.main{margin-left:0;}.menu-toggle{display:flex;}.greeting-card{flex-direction:column;align-items:flex-start;}}
+    @media(max-width:480px){.stats-row{grid-template-columns:1fr 1fr;}.main{padding:16px;}.topbar{padding:0 16px;}}
+  </style>
+</head>
+<body>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div style="display:flex;align-items:center;">
+      <div class="s-logo-ring"><svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="20" rx="1"/><rect x="2" y="9" width="20" height="6" rx="1"/></svg></div>
+      <span class="s-logo-text">Care<em>First</em></span>
+    </div>
+  </div>
+  <div class="sidebar-user">
+    <div class="s-avatar">DR</div>
+    <div class="s-name" id="sidebarName">Dr. Arjun Sharma</div>
+    <div class="s-role">Doctor / Staff</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Clinical</div>
+    <a class="nav-item active" href="#">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>My Patients
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Schedule
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24"><path d="M9 2h6l1 5H8L9 2z"/><rect x="5" y="7" width="14" height="13" rx="2"/><path d="M12 11v4m-2-2h4"/></svg>Prescriptions
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Medical Records
+    </a>
+    <div class="nav-section-label">Analytics</div>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Reports
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Patient Vitals
+    </a>
+    <div class="nav-section-label">Account</div>
+    <a class="nav-item" href="#"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>My Profile</a>
+    <a class="nav-item" href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Settings</a>
+  </nav>
+  <div class="sidebar-footer">
+    <a class="logout-btn" href="login.html"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</a>
+  </div>
+</aside>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="menu-toggle" onclick="toggleSidebar()"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <span class="page-title">Doctor Dashboard</span>
+  </div>
+  <div class="topbar-right">
+    <button class="notif-btn"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><div class="notif-dot"></div></button>
+    <div class="topbar-avatar">DR</div>
+  </div>
+</header>
+
+<main class="main">
+
+  <div class="greeting-card">
+    <div class="greeting-text">
+      <h2>Good Morning, Dr. Sharma &#128075;</h2>
+      <p>You have 12 patients scheduled today. Your first appointment is at 9:00 AM.</p>
+    </div>
+    <div class="greeting-actions">
+      <button class="btn-green">&#128101; View All Patients</button>
+      <button class="btn-outline-w">&#128203; Today's Schedule</button>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-icon si-blue">&#128101;</div><div class="stat-info"><strong>12</strong><span>Today's Appointments</span></div></div>
+    <div class="stat-card"><div class="stat-icon si-green">&#129654;</div><div class="stat-info"><strong>148</strong><span>Total Patients</span></div></div>
+    <div class="stat-card"><div class="stat-icon si-amber">&#128203;</div><div class="stat-info"><strong>6</strong><span>Pending Reports</span></div></div>
+    <div class="stat-card"><div class="stat-icon si-teal">&#11088;</div><div class="stat-info"><strong>4.9</strong><span>Patient Rating</span></div></div>
+  </div>
+
+  <div class="grid-2">
+    <!-- Today's Schedule -->
+    <div class="panel">
+      <div class="panel-head"><h3>&#128197; Today's Schedule</h3><a href="#">Full Schedule</a></div>
+      <div class="panel-body">
+        <div class="sched-item"><div class="sched-time">9:00 AM</div><div class="sched-avatar">RK</div><div class="sched-info"><strong>Raj Kumar</strong><span>Cardiology Follow-up</span></div><span class="badge badge-green">Arrived</span></div>
+        <div class="sched-item"><div class="sched-time">10:00 AM</div><div class="sched-avatar">ML</div><div class="sched-info"><strong>Meera Lakshmanan</strong><span>ECG Review</span></div><span class="badge badge-blue">On Time</span></div>
+        <div class="sched-item"><div class="sched-time">11:30 AM</div><div class="sched-avatar">KV</div><div class="sched-info"><strong>Kiran Varma</strong><span>New Consultation</span></div><span class="badge badge-amber">Waiting</span></div>
+        <div class="sched-item"><div class="sched-time">2:00 PM</div><div class="sched-avatar">AP</div><div class="sched-info"><strong>Anand Pillai</strong><span>Stress Test</span></div><span class="badge badge-blue">Scheduled</span></div>
+        <div class="sched-item"><div class="sched-time">4:00 PM</div><div class="sched-avatar">SR</div><div class="sched-info"><strong>Savitha Reddy</strong><span>Post-surgery Checkup</span></div><span class="badge badge-blue">Scheduled</span></div>
+      </div>
+    </div>
+    <!-- Mini stats -->
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="panel">
+        <div class="panel-head"><h3>&#128200; Weekly Overview</h3></div>
+        <div class="panel-body" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div class="mini-stat"><div class="mini-icon">&#129654;</div><div><div class="mini-label">Patients Seen</div><div class="mini-val">62</div></div></div>
+          <div class="mini-stat"><div class="mini-icon">&#128138;</div><div><div class="mini-label">Prescriptions</div><div class="mini-val">41</div></div></div>
+          <div class="mini-stat"><div class="mini-icon">&#129514;</div><div><div class="mini-label">Lab Ordered</div><div class="mini-val">18</div></div></div>
+          <div class="mini-stat"><div class="mini-icon">&#128657;</div><div><div class="mini-label">Emergencies</div><div class="mini-val">3</div></div></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>&#128336; Next Available Slot</h3></div>
+        <div class="panel-body">
+          <div class="cal-placeholder"><div class="cal-icon">&#128197;</div><p>Tomorrow — 9:00 AM slot is open</p><br/><a href="appointment.html" style="color:var(--primary);font-weight:700;text-decoration:none;font-size:.85rem;">Manage Slots &#8594;</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Patients -->
+  <div class="panel">
+    <div class="panel-head"><h3>&#128101; Recent Patients</h3><a href="#">View All</a></div>
+    <div class="panel-body">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Patient</th><th>Age</th><th>Condition</th><th>Last Visit</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Raj Kumar</strong></td><td>52</td><td>Hypertension</td><td>18 May 2026</td><td><span class="badge badge-green">Stable</span></td><td><a href="#" class="action-link">View</a><a href="#" class="action-link">Notes</a></td></tr>
+            <tr><td><strong>Meera Lakshmanan</strong></td><td>45</td><td>Arrhythmia</td><td>16 May 2026</td><td><span class="badge badge-amber">Monitoring</span></td><td><a href="#" class="action-link">View</a><a href="#" class="action-link">Notes</a></td></tr>
+            <tr><td><strong>Kiran Varma</strong></td><td>38</td><td>Chest Pain</td><td>14 May 2026</td><td><span class="badge badge-red">Critical</span></td><td><a href="#" class="action-link">View</a><a href="#" class="action-link">Notes</a></td></tr>
+            <tr><td><strong>Anand Pillai</strong></td><td>61</td><td>Coronary CAD</td><td>10 May 2026</td><td><span class="badge badge-blue">Follow-up</span></td><td><a href="#" class="action-link">View</a><a href="#" class="action-link">Notes</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  function toggleSidebar(){ document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
+  function closeSidebar(){ document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
+</script>
+</body>
+</html>

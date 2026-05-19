@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Patient Login | CareFirst Hospital</title>
+  <style>
+    :root {
+      --primary: #0a6e8a;
+      --primary-dark: #064d63;
+      --primary-mid: #0e8fa8;
+      --accent: #f0a500;
+      --glow: rgba(10,110,138,0.32);
+      --input-bg: rgba(255,255,255,0.07);
+      --input-border: rgba(255,255,255,0.18);
+      --text-primary: #e8f6fa;
+      --text-muted: #90bfcc;
+      --label: #b3dce8;
+      --radius: 14px;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    html, body {
+      width:100%; min-height:100vh; overflow-x:hidden;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(160deg,
+        #03232e 0%,
+        #064d63 30%,
+        #0a6e8a 60%,
+        #05303d 85%,
+        #021820 100%);
+      color: var(--text-primary);
+      position: relative;
+    }
+
+    /* ── Ambient blobs ── */
+    body::before, body::after {
+      content:''; position:fixed; border-radius:50%;
+      filter:blur(90px); pointer-events:none; z-index:0;
+      animation: drift 14s ease-in-out infinite alternate;
+    }
+    body::before {
+      width:480px; height:480px;
+      background: radial-gradient(circle, rgba(10,110,138,0.30), transparent 70%);
+      top:-120px; left:-80px;
+    }
+    body::after {
+      width:380px; height:380px;
+      background: radial-gradient(circle, rgba(14,143,168,0.22), transparent 70%);
+      bottom:-90px; right:-70px;
+      animation-delay:-7s; animation-duration:11s;
+    }
+    @keyframes drift {
+      from { transform:translate(0,0) scale(1); }
+      to   { transform:translate(40px,30px) scale(1.1); }
+    }
+
+    /* ── Floating cross / medical particles ── */
+    .particles { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+    .particle {
+      position:absolute; border-radius:50%;
+      background: rgba(176,224,240,0.15);
+      animation: floatUp linear infinite;
+    }
+    .particle:nth-child(1){ width:4px;height:4px;left:8%;  animation-duration:16s; }
+    .particle:nth-child(2){ width:6px;height:6px;left:20%; animation-duration:20s; }
+    .particle:nth-child(3){ width:3px;height:3px;left:36%; animation-duration:13s; }
+    .particle:nth-child(4){ width:5px;height:5px;left:52%; animation-duration:18s; }
+    .particle:nth-child(5){ width:4px;height:4px;left:68%; animation-duration:22s; }
+    .particle:nth-child(6){ width:7px;height:7px;left:82%; animation-duration:15s; }
+    .particle:nth-child(7){ width:3px;height:3px;left:94%; animation-duration:12s; }
+    @keyframes floatUp {
+      0%   { transform:translateY(110vh) scale(0.8); opacity:0; }
+      10%  { opacity:1; }
+      90%  { opacity:0.5; }
+      100% { transform:translateY(-10vh) scale(1.2); opacity:0; }
+    }
+
+    /* ── Layout ── */
+    .page-wrap {
+      position:relative; z-index:10;
+      width:100%; min-height:100vh;
+      display:flex; align-items:center; justify-content:center;
+      padding:24px 16px;
+    }
+
+    .login-container {
+      position:relative; width:100%; max-width:500px;
+      background: rgba(3,30,40,0.88);
+      backdrop-filter: blur(28px) saturate(1.4);
+      padding: clamp(28px,6vw,52px) clamp(24px,6vw,46px);
+      border-radius:28px;
+      border:1px solid rgba(10,110,138,0.30);
+      box-shadow: 0 32px 100px rgba(0,0,0,0.55),
+                  0 0 0 1px rgba(255,255,255,0.04) inset;
+    }
+
+    /* ── Card header ── */
+    .card-header { text-align:center; margin-bottom:32px; }
+
+    .logo-ring {
+      display:inline-flex; align-items:center; justify-content:center;
+      width:64px; height:64px; border-radius:20px;
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary-mid));
+      margin-bottom:16px;
+      box-shadow: 0 8px 28px rgba(10,110,138,0.50);
+    }
+
+    .logo-ring svg {
+      width:32px; height:32px; fill:none; stroke:#fff; stroke-width:2.2;
+      stroke-linecap:round; stroke-linejoin:round;
+    }
+
+    /* Hospital cross icon */
+    .logo-ring .cross-h { /* horizontal bar */ }
+
+    .logo-name {
+      font-size:clamp(20px,5vw,26px); font-weight:700;
+      letter-spacing:-.5px; color:#fff;
+    }
+    .logo-name em { color:var(--accent); font-style:normal; }
+
+    .card-header .tagline {
+      font-size:13px; color:var(--text-muted); margin-top:4px; letter-spacing:.2px;
+    }
+
+    .card-header h2 {
+      font-size:clamp(20px,4vw,26px); font-weight:700;
+      margin-top:20px; margin-bottom:4px; color:#fff;
+    }
+    .card-header p { font-size:13.5px; color:var(--text-muted); }
+
+    /* ── Fields ── */
+    .field { margin-bottom:18px; }
+    .field label {
+      display:block; font-size:11.5px; font-weight:700;
+      letter-spacing:.09em; text-transform:uppercase;
+      color:var(--label); margin-bottom:8px;
+    }
+
+    /* generic input */
+    .input-wrap { position:relative; }
+    .input-wrap .icon {
+      position:absolute; left:15px; top:50%; transform:translateY(-50%);
+      color:var(--text-muted); display:flex; align-items:center; pointer-events:none; z-index:2;
+    }
+    .input-wrap input {
+      width:100%; padding:13px 16px 13px 46px;
+      background:var(--input-bg);
+      border:1px solid var(--input-border);
+      border-radius:var(--radius);
+      font-size:14.5px; font-family:inherit;
+      color:var(--text-primary);
+      transition: border-color .25s, box-shadow .25s, background .25s;
+    }
+    .input-wrap input::placeholder { color:var(--text-muted); }
+    .input-wrap input:focus {
+      outline:none;
+      border-color:var(--primary-mid);
+      box-shadow:0 0 0 4px var(--glow);
+      background:rgba(10,110,138,0.10);
+    }
+
+    /* custom select */
+    .select-wrap { position:relative; }
+    .select-wrap select { display:none; }
+
+    .select-face {
+      display:flex; align-items:center;
+      width:100%; padding:13px 46px;
+      background:var(--input-bg);
+      border:1px solid var(--input-border);
+      border-radius:var(--radius);
+      font-size:14.5px; font-family:inherit;
+      color:var(--text-muted);
+      cursor:pointer; position:relative; z-index:1;
+      transition: border-color .25s, box-shadow .25s, background .25s, color .25s;
+      user-select:none;
+    }
+    .select-face.selected { color:var(--text-primary); }
+    .select-face:hover,
+    .select-wrap:focus-within .select-face {
+      border-color:var(--primary-mid);
+      box-shadow:0 0 0 4px var(--glow);
+      background:rgba(10,110,138,0.10);
+    }
+    .select-face .sf-icon {
+      position:absolute; left:15px; top:50%; transform:translateY(-50%);
+      color:var(--text-muted); display:flex; align-items:center; pointer-events:none;
+    }
+    .select-face .sf-arrow {
+      position:absolute; right:15px; top:50%; transform:translateY(-50%);
+      font-size:10px; color:var(--text-muted); transition:transform .2s; pointer-events:none;
+    }
+    .select-wrap.open .sf-arrow { transform:translateY(-50%) rotate(180deg); }
+
+    /* dropdown list */
+    .custom-options {
+      position:absolute; top:calc(100% + 6px); left:0; right:0;
+      background:#042535;
+      border:1px solid rgba(10,110,138,0.35);
+      border-radius:var(--radius); overflow:hidden;
+      box-shadow:0 16px 48px rgba(0,0,0,0.55);
+      z-index:200; display:none; animation:dropIn .18s ease;
+    }
+    .custom-options.open { display:block; }
+    @keyframes dropIn {
+      from { opacity:0; transform:translateY(-6px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .custom-option {
+      display:flex; align-items:center; gap:10px;
+      padding:13px 18px; font-size:14.5px; font-family:inherit;
+      color:var(--text-muted); cursor:pointer;
+      transition: background .15s, color .15s;
+    }
+    .custom-option:not(:last-child) { border-bottom:1px solid rgba(255,255,255,0.06); }
+    .custom-option:hover, .custom-option.active {
+      background:rgba(10,110,138,0.22); color:#7dd3e8;
+    }
+    .custom-option svg { width:16px;height:16px;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:2; }
+
+    .field-error { color:#fc8181; font-size:12px; margin-top:5px; display:block; }
+
+    /* password toggle */
+    .pw-toggle {
+      position:absolute; right:13px; top:50%; transform:translateY(-50%);
+      background:none; border:none; cursor:pointer;
+      color:var(--text-muted); display:flex; align-items:center; transition:color .2s;
+    }
+    .pw-toggle:hover { color:#e2e8f0; }
+    .pw-toggle svg { width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round; }
+    .eye-off { display:none; }
+    .pw-toggle.visible .eye-on  { display:none; }
+    .pw-toggle.visible .eye-off { display:block; }
+
+    /* remember/forgot */
+    .remember-forgot {
+      display:flex; justify-content:space-between; align-items:center;
+      margin-top:-4px; margin-bottom:18px; flex-wrap:wrap; gap:8px;
+    }
+    .remember-me {
+      display:flex; align-items:center; gap:8px;
+      color:var(--text-muted); font-size:13.5px; cursor:pointer;
+    }
+    .remember-me input[type="checkbox"] {
+      width:15px; height:15px; cursor:pointer;
+      accent-color: var(--primary-mid);
+    }
+    .forgot-password { color:#5fb8d4; font-size:13.5px; text-decoration:none; }
+    .forgot-password:hover { color:#93d5e8; }
+
+    /* submit */
+    .btn-submit {
+      width:100%; padding:15px 0; border:none; border-radius:var(--radius);
+      background:linear-gradient(135deg, var(--primary-dark), var(--primary-mid));
+      color:#fff; font-size:15.5px; font-family:inherit; font-weight:700;
+      cursor:pointer; margin-top:6px;
+      transition:transform .2s, box-shadow .2s;
+      box-shadow:0 6px 24px rgba(10,110,138,0.40);
+    }
+    .btn-submit:hover {
+      transform:translateY(-3px);
+      box-shadow:0 14px 36px rgba(10,110,138,0.55);
+    }
+    .btn-submit span { display:flex; align-items:center; justify-content:center; gap:8px; }
+
+    /* divider */
+    .divider { display:flex; align-items:center; gap:12px; margin:22px 0 18px; }
+    .divider::before, .divider::after { content:''; flex:1; height:1px; background:var(--input-border); }
+    .divider span { font-size:12px; color:var(--text-muted); white-space:nowrap; }
+
+    /* signup link */
+    .signup-text { text-align:center; font-size:13.5px; color:var(--text-muted); }
+    .signup-text a { color:#5fb8d4; text-decoration:none; font-weight:700; }
+    .signup-text a:hover { color:#93d5e8; }
+
+    /* back link */
+    .back-home {
+      text-align:center; margin-top:18px;
+      font-size:12.5px; color:var(--text-muted);
+    }
+    .back-home a { color:var(--text-muted); text-decoration:none; display:inline-flex; align-items:center; gap:5px; transition:color .2s; }
+    .back-home a:hover { color:#fff; }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width:480px) {
+      .login-container { border-radius:20px; }
+      .remember-forgot { flex-direction:column; align-items:flex-start; }
+    }
+    @media (min-width:768px) and (max-width:1024px) {
+      .page-wrap { padding:40px 32px; }
+    }
+    @media (min-width:1024px) {
+      .page-wrap { padding:48px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Ambient particles -->
+<div class="particles">
+  <div class="particle"></div><div class="particle"></div>
+  <div class="particle"></div><div class="particle"></div>
+  <div class="particle"></div><div class="particle"></div>
+  <div class="particle"></div>
+</div>
+
+<div class="page-wrap">
+  <div class="login-container">
+
+    <!-- Header / Logo -->
+    <div class="card-header">
+      <div class="logo-ring">
+        <!-- Hospital cross SVG -->
+        <svg viewBox="0 0 24 24">
+          <rect x="9" y="2" width="6" height="20" rx="1"/>
+          <rect x="2" y="9" width="20" height="6" rx="1"/>
+        </svg>
+      </div>
+      <div class="logo-name">Care<em>First</em></div>
+      <div class="tagline">Advanced Healthcare — Compassionate Care</div>
+      <h2>Welcome Back</h2>
+      <p>Sign in to your patient portal</p>
+    </div>
+
+    <!-- Form -->
+    <form id="loginForm" novalidate>
+
+      <!-- Role -->
+      <div class="field">
+        <label>Select Your Role</label>
+        <div class="select-wrap" id="selectWrap">
+          <select name="role" id="role" aria-hidden="true" tabindex="-1">
+            <option value="">Select Role</option>
+            <option value="patient">Patient</option>
+            <option value="doctor">Doctor / Staff</option>
+            <option value="admin">Admin</option>
+          </select>
+
+          <div class="select-face" id="selectFace" tabindex="0"
+               role="combobox" aria-haspopup="listbox" aria-expanded="false">
+            <span class="sf-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+              </svg>
+            </span>
+            <span id="selectText">Select Role</span>
+            <span class="sf-arrow">&#9660;</span>
+          </div>
+
+          <div class="custom-options" id="customOptions" role="listbox">
+            <div class="custom-option" data-value="patient" role="option">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Patient
+            </div>
+            <div class="custom-option" data-value="doctor" role="option">
+              <svg viewBox="0 0 24 24"><path d="M9 2h6l1 4H8L9 2z"/><rect x="5" y="6" width="14" height="14" rx="2"/><path d="M12 10v4m-2-2h4"/></svg>
+              Doctor / Staff
+            </div>
+            <div class="custom-option" data-value="admin" role="option">
+              <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3H8L7 7h10l-1-4z"/><circle cx="12" cy="14" r="2"/></svg>
+              Admin
+            </div>
+          </div>
+
+          <span class="field-error" id="roleError"></span>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="field">
+        <label for="email">Email Address</label>
+        <div class="input-wrap">
+          <span class="icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <path d="M2 8l10 6 10-6"/>
+            </svg>
+          </span>
+          <input type="email" id="email" placeholder="your@email.com" autocomplete="email" required/>
+        </div>
+        <span class="field-error" id="emailError"></span>
+      </div>
+
+      <!-- Password -->
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="input-wrap">
+          <span class="icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+          </span>
+          <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" required/>
+          <button type="button" class="pw-toggle" id="pwToggle" aria-label="Toggle password visibility">
+            <svg class="eye-on" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg class="eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+          </button>
+        </div>
+        <span class="field-error" id="pwError"></span>
+      </div>
+
+      <!-- Remember / Forgot -->
+      <div class="remember-forgot">
+        <label class="remember-me">
+          <input type="checkbox" id="rememberMe"/> Remember Me
+        </label>
+        <a href="#" class="forgot-password">Forgot Password?</a>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="btn-submit">
+        <span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <path d="M15 3h6v6"/><path d="M10 14L21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          </svg>
+          Sign In to Portal
+        </span>
+      </button>
+
+    </form>
+
+    <div class="divider"><span>New patient?</span></div>
+
+    <p class="signup-text">
+      Don't have an account? <a href="signup.html">Register Now</a>
+    </p>
+
+    <div class="back-home">
+      <a href="index.html">&#8592; Back to Hospital Home</a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  /* ── Custom Role Selector ── */
+  const selectWrap    = document.getElementById('selectWrap');
+  const selectFace    = document.getElementById('selectFace');
+  const selectText    = document.getElementById('selectText');
+  const customOptions = document.getElementById('customOptions');
+  const nativeSelect  = document.getElementById('role');
+  const options       = customOptions.querySelectorAll('.custom-option');
+
+  nativeSelect.value  = '';
+  selectText.textContent = 'Select Role';
+
+  function openDropdown()  { customOptions.classList.add('open'); selectWrap.classList.add('open'); selectFace.setAttribute('aria-expanded','true'); }
+  function closeDropdown() { customOptions.classList.remove('open'); selectWrap.classList.remove('open'); selectFace.setAttribute('aria-expanded','false'); }
+  function toggleDropdown(){ customOptions.classList.contains('open') ? closeDropdown() : openDropdown(); }
+
+  selectFace.addEventListener('click', toggleDropdown);
+  selectFace.addEventListener('keydown', function(e){
+    if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggleDropdown(); }
+    if(e.key==='Escape') closeDropdown();
+  });
+
+  options.forEach(function(opt){
+    opt.addEventListener('click', function(){
+      var val   = opt.getAttribute('data-value');
+      var label = opt.textContent.trim();
+      nativeSelect.value = val;
+      selectText.textContent = label;
+      selectFace.classList.add('selected');
+      document.getElementById('roleError').textContent = '';
+      options.forEach(function(o){ o.classList.remove('active'); });
+      opt.classList.add('active');
+      closeDropdown();
+      selectFace.focus();
+    });
+  });
+
+  document.addEventListener('click', function(e){
+    if(!selectWrap.contains(e.target)) closeDropdown();
+  });
+
+  /* ── Password Toggle ── */
+  const pwToggle = document.getElementById('pwToggle');
+  const pwInput  = document.getElementById('password');
+  pwToggle.addEventListener('click', function(){
+    var hide = pwInput.type === 'password';
+    pwInput.type = hide ? 'text' : 'password';
+    pwToggle.classList.toggle('visible', hide);
+    pwToggle.setAttribute('aria-label', hide ? 'Hide password' : 'Show password');
+  });
+
+  /* ── Form Submit ── */
+  document.getElementById('loginForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var valid = true;
+
+    // Role
+    var role = nativeSelect.value;
+    if(!role){
+      document.getElementById('roleError').textContent = 'Please select a role to continue.';
+      valid = false;
+    } else {
+      document.getElementById('roleError').textContent = '';
+    }
+
+    // Email
+    var email = document.getElementById('email').value.trim();
+    var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!email || !emailRe.test(email)){
+      document.getElementById('emailError').textContent = 'Please enter a valid email address.';
+      valid = false;
+    } else {
+      document.getElementById('emailError').textContent = '';
+    }
+
+    // Password
+    var pw = document.getElementById('password').value;
+    if(!pw || pw.length < 6){
+      document.getElementById('pwError').textContent = 'Password must be at least 6 characters.';
+      valid = false;
+    } else {
+      document.getElementById('pwError').textContent = '';
+    }
+
+    if(!valid) return;
+
+    localStorage.setItem('userEmail', email);
+    localStorage.setItem('userRole', role);
+
+    if(role === 'patient')     window.location.href = 'patient-dashboard.html';
+    else if(role === 'doctor') window.location.href = 'doctor-dashboard.html';
+    else if(role === 'admin')  window.location.href = 'admin-dashboard.html';
+  });
+</script>
+</body>
+</html>
