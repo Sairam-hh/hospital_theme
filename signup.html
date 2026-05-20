@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Patient Registration | CareFirst Hospital</title>
+  <title>Register | Stackly Hospital</title>
   <style>
     :root {
       --primary: #0a6e8a;
@@ -99,7 +99,7 @@
       box-shadow:0 8px 28px rgba(10,110,138,0.50);
     }
     .logo-ring svg { width:32px;height:32px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round; }
-    .logo-name { font-size:clamp(20px,5vw,26px); font-weight:700; letter-spacing:-.5px; color:#fff; }
+    .logo-name { font-size:clamp(20px,5vw,26px); font-weight:700; letter-spacing:-.5px; color:#fff; font-family:Georgia,serif; }
     .logo-name em { color:var(--accent); font-style:normal; }
     .card-header .tagline { font-size:12.5px; color:var(--text-muted); margin-top:3px; }
     .card-header h2 { font-size:clamp(19px,4vw,24px); font-weight:700; margin-top:18px; margin-bottom:4px; color:#fff; }
@@ -267,6 +267,7 @@
     .back-home a:hover { color:#fff; }
 
     /* RESPONSIVE */
+    /* (mobile fix moved below) */
     @media (max-width:480px) {
       .signup-container { border-radius:20px; }
       .row-2 { grid-template-columns:1fr; }
@@ -275,6 +276,50 @@
     }
     @media (min-width:768px) and (max-width:1024px) { .page-wrap { padding:40px 32px; } }
     @media (min-width:1024px) { .page-wrap { padding:48px 24px; } }
+
+    /* ─── MOBILE SCROLL FIX ─── */
+    @media(max-width:540px){
+      .page-wrap{align-items:flex-start;padding-top:20px;padding-bottom:20px;}
+      .signup-container{border-radius:20px;max-width:100%;}
+      .row-2{grid-template-columns:1fr;}
+      .steps{gap:2px;}
+      .step-label{font-size:9px;}
+    }
+    @media(max-width:360px){
+      .signup-container{padding:22px 16px;}
+    }
+
+    /* ── Stackly Logo ── */
+    .stackly-logo-wrap{display:flex;flex-direction:column;align-items:center;gap:0;}
+    .stackly-ring{width:66px;height:66px;border-radius:18px;background:linear-gradient(135deg,var(--primary-dark) 0%,var(--primary-mid) 100%);display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px;box-shadow:0 8px 28px rgba(10,110,138,0.55),0 0 0 1px rgba(255,255,255,0.10) inset;position:relative;overflow:hidden;}
+    .stackly-ring::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.12) 0%,transparent 60%);}
+    .stackly-ring svg{width:34px;height:34px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;position:relative;z-index:1;}
+    .stackly-wordmark{display:flex;align-items:baseline;gap:0;}
+    .stackly-s1{font-size:clamp(22px,5vw,27px);font-weight:800;color:#fff;letter-spacing:-1px;font-family:Georgia,serif;}
+    .stackly-s2{font-size:clamp(22px,5vw,27px);font-weight:800;color:var(--accent);letter-spacing:-1px;font-family:Georgia,serif;}
+    .stackly-tagline{font-size:11px;color:rgba(176,220,235,0.70);margin-top:3px;letter-spacing:.5px;text-transform:uppercase;font-weight:500;}
+
+    .logo-img{
+  width:110px;
+  height:42px;
+  object-fit:contain;
+  border-radius:10px;
+  background:#fff;
+  padding:5px;
+  box-shadow:0 4px 12px rgba(0,0,0,.12);
+  background-color: rgb(12, 12, 12);
+}
+
+.logo-text{
+  font-size:1.4rem;
+  font-weight:700;
+  color:#fff;
+}
+
+.logo-text em{
+  color:#00a0f0;
+  font-style:normal;
+}
   </style>
 </head>
 <body>
@@ -290,14 +335,35 @@
 
     <!-- Header -->
     <div class="card-header">
-      <div class="logo-ring">
-        <svg viewBox="0 0 24 24">
-          <rect x="9" y="2" width="6" height="20" rx="1"/>
-          <rect x="2" y="9" width="20" height="6" rx="1"/>
-        </svg>
+      <div class="stackly-logo-wrap">
+        <div class="stackly-ring">
+          <svg viewBox="0 0 36 36">
+            <rect x="4" y="24" width="28" height="6" rx="3" fill="rgba(255,255,255,0.35)"/>
+            <rect x="7" y="17" width="22" height="6" rx="3" fill="rgba(255,255,255,0.60)"/>
+            <rect x="10" y="10" width="16" height="5" rx="2.5" fill="#ffffff"/>
+            <rect x="15.5" y="5" width="5" height="16" rx="2.5" fill="#ffffff"/>
+          </svg>
+        </div>
+        <div class="stackly-wordmark">
+          <!-- <span class="stackly-s1">Stack</span><span class="stackly-s2">ly</span> -->
+           <a class="nav-logo" href="index.html">
+
+  <!-- LOGO IMAGE -->
+  <img 
+    src="./stackly-logo (1).webp" 
+    alt="CareFirst Logo"
+    class="logo-img"
+  >
+
+  <!-- LOGO TEXT -->
+  <!-- <span class="logo-text">
+    Care<em>First</em>
+  </span> -->
+
+</a>
+        </div>
+        <div class="stackly-tagline">Healthcare Portal</div>
       </div>
-      <div class="logo-name">Care<em>First</em></div>
-      <div class="tagline">Advanced Healthcare — Compassionate Care</div>
       <h2>Create Your Account</h2>
       <p>Register to access the patient portal</p>
     </div>

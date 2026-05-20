@@ -138,6 +138,7 @@
     .overlay.show{display:block;}
 
     /* RESPONSIVE */
+    /* ── Sidebar / topbar hide at 768 ── */
     @media(max-width:900px){
       .stats-row{grid-template-columns:repeat(2,1fr);}
       .grid-2,.grid-2-eq{grid-template-columns:1fr;}
@@ -151,11 +152,84 @@
       .menu-toggle{display:flex;}
       .greeting-card{flex-direction:column;align-items:flex-start;}
     }
+
+    /* ═══════════════════════════════════════════════════════
+       MOBILE HORIZONTAL SCROLL FIX
+       ═══════════════════════════════════════════════════════ */
+
+    /* 1. Stop the whole page from scrolling sideways */
+    html, body { overflow-x: hidden !important; max-width: 100vw; }
+    .main { overflow-x: hidden; }
+
+    /* 2. Tables — always scroll inside their wrapper, never push layout */
+    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+    table { min-width: 480px; }
+
+    /* 3. Greeting card — no overflow on small screens */
+    .greeting-card, .banner {
+      padding: 20px !important;
+      word-break: break-word;
+    }
+
+    /* 4. All panels — constrain width */
+    .panel { min-width: 0; max-width: 100%; }
+
+    /* 5. Stat cards — never let them overflow */
+    .stat-card { min-width: 0; }
+
+    /* 6. Every grid — min-width 0 on children to prevent blowout */
+    .stats-row > *, .grid-2 > *, .grid-2-eq > *,
+    .grid-3 > *, .grid-3-1 > *, .quick-grid > * { min-width: 0; }
+
+    /* 7. Topbar right — hide overflow items gracefully */
+    .topbar { max-width: 100vw; overflow: hidden; }
+    .topbar-right { flex-shrink: 0; gap: 8px; }
+
+    /* 8. Sidebar — never cause horizontal scroll */
+    .sidebar { max-width: 252px; }
+
+    /* ── 320 px ── absolute minimum phone */
+    @media(max-width:380px){
+      .stats-row { grid-template-columns: 1fr !important; }
+      .quick-grid { grid-template-columns: 1fr 1fr !important; }
+      .main { padding: 12px !important; }
+      .topbar { padding: 0 12px !important; }
+      .greeting-card, .banner { padding: 16px !important; }
+      .greeting-actions, .banner-actions { flex-direction: column; width: 100%; }
+      .greeting-actions button, .greeting-actions a,
+      .banner-actions button { width: 100%; justify-content: center; }
+      table { min-width: 360px; font-size: .75rem; }
+      thead th, tbody td { padding: 8px 10px; }
+      .metric-grid { grid-template-columns: 1fr 1fr; }
+      .donut-wrap { flex-direction: column; align-items: center; }
+      .bar-chart { height: 80px; }
+    }
+
+    /* ── 480 px ── small phones */
     @media(max-width:480px){
-      .stats-row{grid-template-columns:1fr 1fr;}
-      .main{padding:16px;}
-      .topbar{padding:0 16px;}
-      .quick-grid{grid-template-columns:repeat(2,1fr);}
+      .stats-row { grid-template-columns: 1fr 1fr !important; }
+      .grid-2, .grid-2-eq, .grid-3, .grid-3-1 { grid-template-columns: 1fr !important; }
+      .quick-grid { grid-template-columns: 1fr 1fr !important; }
+      .main { padding: 14px !important; }
+      .topbar { padding: 0 14px !important; }
+      .greeting-text h2, .banner-text h2 { font-size: 1.1rem; }
+      .greeting-text p, .banner-text p { font-size: .82rem; }
+      .sched-item { flex-wrap: wrap; gap: 6px; }
+      .appt-item { flex-wrap: wrap; gap: 8px; }
+      .panel-head { flex-wrap: wrap; gap: 6px; }
+      .panel-head h3 { font-size: .88rem; }
+      .stat-card { padding: 14px 12px; }
+      .stat-icon { width: 38px; height: 38px; font-size: 16px; }
+      .stat-info strong { font-size: 1.25rem; }
+    }
+
+    /* ── 600 px ── medium phones / small tablets */
+    @media(max-width:600px){
+      .stats-row { grid-template-columns: 1fr 1fr !important; }
+      .grid-2, .grid-2-eq, .grid-3-1 { grid-template-columns: 1fr !important; }
+      .grid-3 { grid-template-columns: 1fr 1fr !important; }
+      .quick-grid { grid-template-columns: 1fr 1fr !important; }
+      .topbar-right .tb-admin-name { display: none; }
     }
 
     .logo-img{
@@ -210,39 +284,40 @@
     </div>
   </div>
   <div class="sidebar-user">
-    <div class="s-avatar">RK</div>
+    <div class="s-avatar" id="sidebarAvatar">RK</div>
     <div class="s-name" id="sidebarName">Raj Kumar</div>
+    <div class="s-email" id="sidebarEmail" style="font-size:.70rem;color:rgba(255,255,255,.38);margin-top:2px;word-break:break-all;"></div>
     <div class="s-role">Patient</div>
   </div>
   <nav class="sidebar-nav">
     <div class="nav-section-label">Main Menu</div>
-    <a class="nav-item active" href="#">
+    <a class="nav-item active" href="404-error-page.html">
       <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard
     </a>
-    <a class="nav-item" href="appointment.html">
+    <a class="nav-item" href="404-error-page.html">
       <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Appointments
     </a>
-    <a class="nav-item" href="#">
+    <a class="nav-item" href="404-error-page.html">
       <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>My Records
     </a>
-    <a class="nav-item" href="#">
+    <a class="nav-item" href="404-error-page.html">
       <svg viewBox="0 0 24 24"><path d="M9 2h6l1 5H8L9 2z"/><rect x="5" y="7" width="14" height="13" rx="2"/><path d="M12 11v4m-2-2h4"/></svg>Prescriptions
     </a>
     <div class="nav-section-label">Health</div>
-    <a class="nav-item" href="#">
+    <a class="nav-item" href="404-error-page.html">
       <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Vitals &amp; Tests
     </a>
-    <a class="nav-item" href="#">
+    <a class="nav-item" href="404-error-page.html">
       <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>Health History
     </a>
-    <a class="nav-item" href="#">
+    <a class="nav-item" href="404-error-page.html">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>Bill &amp; Payments
     </a>
     <div class="nav-section-label">Account</div>
-    <a class="nav-item" href="#">
+    <a class="nav-item" href="404-error-page.html">
       <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>My Profile
     </a>
-    <a class="nav-item" href="#">
+    <a class="nav-item" href="404-error-page.html">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Settings
     </a>
   </nav>
@@ -267,7 +342,7 @@
       <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
       <div class="notif-dot"></div>
     </button>
-    <div class="topbar-avatar" title="My Profile">RK</div>
+    <div class="topbar-avatar" id="topbarAvatar" title="My Profile">RK</div>
   </div>
 </header>
 
@@ -277,7 +352,7 @@
   <!-- Greeting -->
   <div class="greeting-card">
     <div class="greeting-text">
-      <h2>Good Morning, sairam &#128075;</h2>
+      <h2 id="greetingName">Good Morning, Raj Kumar &#128075;</h2>
       <p>You have 2 upcoming appointments this week. Stay healthy!</p>
     </div>
     <div class="greeting-actions">
@@ -407,8 +482,45 @@
 
 <script>
   // Load stored name
-  var email = localStorage.getItem('userEmail') || '';
-  if(email){ var nm = email.split('@')[0]; document.getElementById('sidebarName').textContent = nm.charAt(0).toUpperCase()+nm.slice(1); }
+  // ── Load user from localStorage ──────────────────────────────────────────
+  (function(){
+    var email = localStorage.getItem('userEmail') || '';
+    var role  = localStorage.getItem('userRole')  || 'patient';
+
+    // derive display name from email (part before @)
+    var raw  = email ? email.split('@')[0] : 'Guest';
+    // replace dots/underscores/hyphens with space, capitalise each word
+    var name = raw.replace(/[._\-]+/g,' ')
+                  .split(' ')
+                  .map(function(w){ return w.charAt(0).toUpperCase()+w.slice(1).toLowerCase(); })
+                  .join(' ');
+
+    // initials (up to 2 chars)
+    var parts    = name.split(' ');
+    var initials = parts.length >= 2
+      ? parts[0][0] + parts[parts.length-1][0]
+      : name.slice(0,2).toUpperCase();
+
+    // greeting based on time of day
+    var hr = new Date().getHours();
+    var greet = hr < 12 ? 'Good Morning' : hr < 17 ? 'Good Afternoon' : 'Good Evening';
+
+    // apply to DOM
+    var elSidebarName   = document.getElementById('sidebarName');
+    var elSidebarAvatar = document.getElementById('sidebarAvatar');
+    var elTopbarAvatar  = document.getElementById('topbarAvatar');
+    var elGreeting      = document.getElementById('greetingName');
+
+    if(elSidebarName)   elSidebarName.textContent   = name;
+    if(elSidebarAvatar) elSidebarAvatar.textContent  = initials;
+    if(elTopbarAvatar)  elTopbarAvatar.textContent   = initials;
+    if(elTopbarAvatar)  elTopbarAvatar.title          = name + ' (' + email + ')';
+    if(elGreeting)      elGreeting.innerHTML          = greet + ', ' + name + ' &#128075;';
+
+    // also show email as small line under name in sidebar
+    var emailEl = document.getElementById('sidebarEmail');
+    if(emailEl) emailEl.textContent = email;
+  })();
 
   function toggleSidebar(){ document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
   function closeSidebar(){ document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
