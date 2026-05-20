@@ -485,6 +485,93 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
   .features-list{grid-template-columns:1fr}
   .slide-btns{flex-direction:column;align-items:flex-start}
 }
+
+
+/* HERO FLEX */
+
+.hero-flex{
+  position:relative;
+  z-index:2;
+  width:100%;
+  max-width:1300px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:40px;
+  padding:80px 7%;
+}
+
+/* RIGHT IMAGE */
+
+.hero-image{
+  flex:1;
+  display:flex;
+  justify-content:center;
+}
+
+.hero-image img{
+  width:100%;
+  max-width:520px;
+  border-radius:24px;
+  object-fit:cover;
+  box-shadow:0 20px 50px rgba(0,0,0,.25);
+}
+
+/* LEFT CONTENT */
+
+.slide-content{
+  flex:1;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+  .hero-flex{
+    flex-direction:column;
+    text-align:center;
+    padding:100px 6% 70px;
+  }
+
+  .slide-btns{
+    justify-content:center;
+  }
+
+  .hero-image img{
+    max-width:100%;
+  }
+
+}
+/* NAVIGATION LOGO */
+.nav-logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+}
+
+.logo-img{
+  width:110px;
+  height:42px;
+  object-fit:contain;
+  border-radius:10px;
+  background:#fff;
+  padding:5px;
+  box-shadow:0 4px 12px rgba(0,0,0,.12);
+  background-color: rgb(68, 156, 122);
+}
+
+.logo-text{
+  font-size:1.4rem;
+  font-weight:700;
+  color:#fff;
+}
+
+.logo-text em{
+  color:#00a0f0;
+  font-style:normal;
+}
 </style>
 
 </head>
@@ -563,12 +650,12 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
       <span>&#128336; Open 24/7 — Emergency Available</span>
     </div>
     <div style="display:flex;align-items:center;gap:20px;">
-      <a href="tel:+911234567890">&#128222; +91 1234567890</a>
+      <a href="tel:+911234567890">&#128222; +91 7995358828</a>
       <div class="tb-socials">
-        <a href="#" title="Facebook">f</a>
-        <a href="#" title="Twitter">t</a>
-        <a href="#" title="Instagram">in</a>
-        <a href="#" title="YouTube">yt</a>
+        <a href="404-error-page.html" title="Facebook">f</a>
+        <a href="404-error-page.html" title="Twitter">t</a>
+        <a href="404-error-page.html" title="Instagram">in</a>
+        <a href="404-error-page.html" title="YouTube">yt</a>
       </div>
     </div>
   </div>
@@ -578,20 +665,31 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
 <nav class="navbar">
   <div class="container">
     <a class="nav-logo" href="index.html">
-      <div class="logo-icon">&#10084;</div>
-      <span class="logo-text">Care<em>First</em></span>
-    </a>
+
+  <!-- LOGO IMAGE -->
+  <img 
+    src="./stackly-logo (1).webp" 
+    alt="CareFirst Logo"
+    class="logo-img"
+  >
+
+  <!-- LOGO TEXT -->
+  <!-- <span class="logo-text">
+    Care<em>First</em>
+  </span> -->
+
+</a>
     <div class="nav-links">
       <a href="index.html" class="active">Home</a>
       <a href="about.html">About Us</a>
-      <a href="service.html">Services</a>
+      <a href="services.html">Services</a>
       <a href="departments.html">Departments</a>
       <a href="blog.html">Health Blog</a>
       <a href="contact.html">Contact</a>
     </div>
     <div class="nav-cta">
       <a href="login.html" class="btn-outline">Patient Login</a>
-      <button class="btn-primary" onclick="openSignup()">&#128221; Sign Up</button>
+      <a href="signup.html" class="btn-primary">&#128221; Sign Up</a>
       <a href="appointment.html" class="btn-primary">&#128197; Book Appointment</a>
     </div>
     <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
@@ -602,66 +700,147 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
     <button class="mobile-nav-close" id="mobileNavClose">&#10005;</button>
     <a href="index.html">Home</a>
     <a href="about.html">About Us</a>
-    <a href="service.html">Services</a>
+    <a href="services.html">Services</a>
     <a href="departments.html">Departments</a>
     <a href="blog.html">Health Blog</a>
     <a href="contact.html">Contact</a>
     <a href="login.html">Patient Login</a>
-    <button class="btn-primary" onclick="openSignup();closeMobileNav()">&#128221; Sign Up</button>
+    <a href="signup.html" class="btn-primary">&#128221; Sign Up</a>
     <a href="appointment.html" class="btn-primary">&#128197; Book Appointment</a>
   </div>
 </nav>
 
 <!-- ===== HERO SLIDER ===== -->
 <section class="hero-slider">
+
+  <!-- SLIDE 1 -->
   <div class="slide active">
+
     <div class="slide-bg" style="background:linear-gradient(120deg,#064d63 0%,#0a6e8a 60%,#0e9aad 100%);"></div>
+
     <div class="slide-overlay"></div>
-    <div class="slide-content">
-      <div class="slide-badge">World-Class Healthcare</div>
-      <h1>Advanced Care<br>for Every Patient</h1>
-      <p>Experience compassionate, cutting-edge medical care delivered by over 200 specialist doctors across 30+ departments.</p>
-      <div class="slide-btns">
-        <a href="service.html" class="btn-white">&#10010; Our Services</a>
-        <a href="appointment.html" class="btn-ghost">Book Appointment</a>
+
+    <!-- NEW FLEX WRAPPER -->
+    <div class="hero-flex">
+
+      <!-- LEFT CONTENT -->
+      <div class="slide-content">
+
+        <div class="slide-badge">World-Class Healthcare</div>
+
+        <h1>
+          Advanced Care<br>
+          for Every Patient
+        </h1>
+
+        <p>
+          Experience compassionate, cutting-edge medical care delivered by over 200 specialist doctors across 30+ departments.
+        </p>
+
+        <div class="slide-btns">
+          <a href="services.html" class="btn-white">&#10010; Our Services</a>
+          <a href="appointment.html" class="btn-ghost">Book Appointment</a>
+        </div>
+
       </div>
+
+      <!-- RIGHT IMAGE -->
+      <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1584515933487-779824d29309?q=80&w=1200&auto=format&fit=crop" alt="Doctors">
+      </div>
+
     </div>
+
   </div>
+
+  <!-- SLIDE 2 -->
   <div class="slide">
+
     <div class="slide-bg" style="background:linear-gradient(120deg,#0d2137 0%,#0a5a78 60%,#0e9aad 100%);"></div>
+
     <div class="slide-overlay"></div>
-    <div class="slide-content">
-      <div class="slide-badge">Modern Diagnostics</div>
-      <h1>Next-Generation<br>Medical Technology</h1>
-      <p>State-of-the-art diagnostic labs, MRI, CT scan, and robotic surgery capabilities for accurate, fast results.</p>
-      <div class="slide-btns">
-        <a href="departments.html" class="btn-white">&#128270; Departments</a>
-        <a href="about.html" class="btn-ghost">Learn More</a>
+
+    <div class="hero-flex">
+
+      <div class="slide-content">
+
+        <div class="slide-badge">Modern Diagnostics</div>
+
+        <h1>
+          Next-Generation<br>
+          Medical Technology
+        </h1>
+
+        <p>
+          State-of-the-art diagnostic labs, MRI, CT scan, and robotic surgery capabilities for accurate, fast results.
+        </p>
+
+        <div class="slide-btns">
+          <a href="departments.html" class="btn-white">&#128270; Departments</a>
+          <a href="about.html" class="btn-ghost">Learn More</a>
+        </div>
+
       </div>
+
+      <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=1200&auto=format&fit=crop" alt="Hospital Technology">
+      </div>
+
     </div>
+
   </div>
+
+  <!-- SLIDE 3 -->
   <div class="slide">
+
     <div class="slide-bg" style="background:linear-gradient(120deg,#063847 0%,#0a6e8a 50%,#16a085 100%);"></div>
+
     <div class="slide-overlay"></div>
-    <div class="slide-content">
-      <div class="slide-badge">24/7 Emergency</div>
-      <h1>Always Here<br>When You Need Us</h1>
-      <p>Round-the-clock emergency care, ICU, and trauma services staffed by highly trained medical professionals.</p>
-      <div class="slide-btns">
-        <a href="contact.html" class="btn-white">&#128657; Emergency</a>
-        <a href="blog.html" class="btn-ghost">Health Blog</a>
+
+    <div class="hero-flex">
+
+      <div class="slide-content">
+
+        <div class="slide-badge">24/7 Emergency</div>
+
+        <h1>
+          Always Here<br>
+          When You Need Us
+        </h1>
+
+        <p>
+          Round-the-clock emergency care, ICU, and trauma services staffed by highly trained medical professionals.
+        </p>
+
+        <div class="slide-btns">
+          <a href="contact.html" class="btn-white">&#128657; Emergency</a>
+          <a href="blog.html" class="btn-ghost">Health Blog</a>
+        </div>
+
       </div>
+
+      <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=1200&auto=format&fit=crop" alt="Emergency Care">
+      </div>
+
     </div>
+
   </div>
+
+  <!-- DOTS -->
   <div class="slider-dots">
-    <div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+    <div class="dot active"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
   </div>
+
+  <!-- ARROWS -->
   <div class="slider-arrows">
     <button class="arrow-btn prev-btn">&#8592;</button>
     <button class="arrow-btn next-btn">&#8594;</button>
   </div>
-</section>
 
+</section>
 <!-- ===== STATS BAR ===== -->
 <div class="stats-bar">
   <div class="container">
@@ -723,7 +902,7 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
       <div class="service-card reveal"><div class="service-icon">&#129514;</div><h3>Diagnostics &amp; Lab</h3><p>NABL-accredited diagnostic centre with over 2,000 tests, digital radiology, and 24-hour pathology services.</p><a href="service.html" class="service-link">Learn More &#8594;</a></div>
     </div>
     <div style="text-align:center;margin-top:40px;" class="reveal">
-      <a href="service.html" class="btn-primary">&#9776; View All Services</a>
+      <a href="services.html" class="btn-primary">&#9776; View All Services</a>
     </div>
   </div>
 </section>
@@ -919,17 +1098,17 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
           <p><span style="color:var(--accent);">&#9993;</span> <a href="mailto:care@carefirst.com">care@carefirst.com</a></p>
         </div>
         <div class="footer-socials">
-          <a href="#">f</a><a href="#">t</a><a href="#">in</a><a href="#">yt</a><a href="#">li</a>
+          <a href="404-error-page.html">f</a><a href="404-error-page.html">t</a><a href="404-error-page.html">in</a><a href="404-error-page.html">yt</a><a href="404-error-page.html">li</a>
         </div>
       </div>
       <div>
         <h4>Hospital Services</h4>
         <ul class="footer-links">
-          <li><a href="service.html">Cardiology</a></li>
-          <li><a href="service.html">Neurology</a></li>
-          <li><a href="service.html">Orthopaedics</a></li>
-          <li><a href="service.html">Oncology</a></li>
-          <li><a href="service.html">Emergency Care</a></li>
+          <li><a href="services.html">Cardiology</a></li>
+          <li><a href="services.html">Neurology</a></li>
+          <li><a href="services.html">Orthopaedics</a></li>
+          <li><a href="services.html">Oncology</a></li>
+          <li><a href="services.html">Emergency Care</a></li>
         </ul>
       </div>
       <div>

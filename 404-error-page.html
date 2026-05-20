@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 - Page Not Found</title>
+
+<style>
+
+:root{
+  --primary:#0a6e8a;
+  --primary-dark:#064d63;
+  --primary-mid:#0e9aad;
+  --accent:#f0a500;
+  --white:#ffffff;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI',sans-serif;
+}
+
+html,
+body{
+  width:100%;
+  overflow-x:hidden;
+}
+
+body{
+  min-height:100vh;
+  background:linear-gradient(135deg,#064d63 0%,#0a6e8a 55%,#0e9aad 100%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+  padding:20px;
+}
+
+/* BACKGROUND CIRCLES */
+
+.circle{
+  position:absolute;
+  border-radius:50%;
+  background:rgba(255,255,255,.05);
+  animation:float 8s ease-in-out infinite;
+}
+
+.circle1{
+  width:320px;
+  height:320px;
+  top:-120px;
+  right:-100px;
+}
+
+.circle2{
+  width:250px;
+  height:250px;
+  bottom:-80px;
+  left:-80px;
+  animation-delay:2s;
+}
+
+.circle3{
+  width:180px;
+  height:180px;
+  top:50%;
+  left:8%;
+  animation-delay:4s;
+}
+
+@keyframes float{
+  0%,100%{
+    transform:translateY(0);
+  }
+  50%{
+    transform:translateY(-20px);
+  }
+}
+
+/* MAIN CONTAINER */
+
+.error-container{
+  width:100%;
+  max-width:1200px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:50px;
+  position:relative;
+  z-index:2;
+  overflow:hidden;
+}
+
+/* LEFT SIDE */
+
+.error-content{
+  flex:1;
+  color:#fff;
+  min-width:0;
+}
+
+.error-badge{
+  display:inline-block;
+  padding:8px 18px;
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:30px;
+  margin-bottom:22px;
+  font-size:.9rem;
+  backdrop-filter:blur(10px);
+}
+
+.error-code{
+  font-size:7rem;
+  line-height:1;
+  font-weight:800;
+  margin-bottom:20px;
+}
+
+.error-title{
+  font-size:2.7rem;
+  font-weight:700;
+  margin-bottom:18px;
+}
+
+.error-text{
+  font-size:1rem;
+  line-height:1.8;
+  opacity:.85;
+  max-width:550px;
+  margin-bottom:35px;
+}
+
+/* BUTTONS */
+
+.error-btns{
+  display:flex;
+  gap:15px;
+  flex-wrap:wrap;
+}
+
+.btn-white{
+  background:#fff;
+  color:var(--primary);
+  padding:14px 28px;
+  border-radius:40px;
+  text-decoration:none;
+  font-weight:700;
+  transition:.3s;
+}
+
+.btn-white:hover{
+  background:var(--accent);
+  color:#000;
+  transform:translateY(-3px);
+}
+
+.btn-ghost{
+  border:2px solid rgba(255,255,255,.4);
+  color:#fff;
+  padding:14px 28px;
+  border-radius:40px;
+  text-decoration:none;
+  font-weight:700;
+  transition:.3s;
+}
+
+.btn-ghost:hover{
+  background:rgba(255,255,255,.12);
+  transform:translateY(-3px);
+}
+
+/* RIGHT SIDE */
+
+.error-image{
+  flex:1;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-width:0;
+}
+
+.error-image img{
+  width:100%;
+  max-width:450px;
+  height:auto;
+  display:block;
+  animation:floatImage 5s ease-in-out infinite;
+  filter:drop-shadow(0 20px 40px rgba(0,0,0,.25));
+}
+
+@keyframes floatImage{
+  0%,100%{
+    transform:translateY(0);
+  }
+  50%{
+    transform:translateY(-18px);
+  }
+}
+
+/* GLOW */
+
+.glow{
+  position:absolute;
+  width:500px;
+  height:500px;
+  background:rgba(255,255,255,.08);
+  filter:blur(120px);
+  border-radius:50%;
+  z-index:0;
+}
+
+/* TABLET */
+
+@media(max-width:950px){
+
+  .error-container{
+    flex-direction:column;
+    text-align:center;
+    gap:40px;
+  }
+
+  .error-btns{
+    justify-content:center;
+  }
+
+  .error-code{
+    font-size:5rem;
+  }
+
+  .error-title{
+    font-size:2rem;
+  }
+
+  .error-text{
+    margin:auto auto 30px;
+  }
+
+  .error-image img{
+    max-width:320px;
+  }
+
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+  body{
+    padding:15px;
+  }
+
+  .error-container{
+    gap:25px;
+  }
+
+  .error-code{
+    font-size:3.7rem;
+  }
+
+  .error-title{
+    font-size:1.5rem;
+  }
+
+  .error-text{
+    font-size:.92rem;
+    line-height:1.7;
+  }
+
+  .error-image img{
+    max-width:240px;
+  }
+
+  .btn-white,
+  .btn-ghost{
+    width:100%;
+    text-align:center;
+  }
+
+  .error-btns{
+    flex-direction:column;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- BACKGROUND -->
+
+<div class="circle circle1"></div>
+<div class="circle circle2"></div>
+<div class="circle circle3"></div>
+<div class="glow"></div>
+
+<!-- MAIN -->
+
+<div class="error-container">
+
+  <!-- LEFT -->
+
+  <div class="error-content">
+
+    <div class="error-badge">
+      CareFirst Hospital
+    </div>
+
+    <div class="error-code">
+      404
+    </div>
+
+    <h1 class="error-title">
+      Oops! Page Not Found
+    </h1>
+
+    <p class="error-text">
+      The page you are looking for might have been removed,
+      renamed, or is temporarily unavailable. Please check the URL
+      or return back to the homepage.
+    </p>
+
+    <div class="error-btns">
+
+      <a href="index.html" class="btn-white">
+        ⬅ Back To Home
+      </a>
+
+      <a href="contact.html" class="btn-ghost">
+        Contact Support
+      </a>
+
+    </div>
+
+  </div>
+
+  <!-- RIGHT -->
+
+  <div class="error-image">
+
+    <img
+      src="https://cdn-icons-png.flaticon.com/512/755/755014.png"
+      alt="404 Illustration"
+    >
+
+  </div>
+
+</div>
+
+</body>
+</html>
