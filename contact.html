@@ -405,6 +405,23 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
   color:#00a0f0;
   font-style:normal;
 }
+
+/* Fix horizontal scroll on mobile */
+html, body { overflow-x: hidden; max-width: 100%; }
+.container { max-width: 100%; }
+img, iframe, video { max-width: 100%; height: auto; }
+
+@media (max-width: 700px) {
+  .testi-card { min-width: 0; flex: 0 0 100%; }
+  .testi-track { gap: 16px; }
+  .newsletter-form { flex-wrap: wrap; }
+  .newsletter-form input,
+  .newsletter-form button { border-radius: 30px; width: 100%; }
+  .page-hero::before,
+  .cta-banner::before { display: none; }
+  .about-img-thumb { right: 0; width: 140px; }
+}
+
 </style>
 </head>
 <body><div class="topbar">
@@ -538,8 +555,21 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     <div class="footer-grid">
       <div class="footer-brand">
         <div class="logo-wrap">
-          <div class="logo-icon">&#10084;</div>
-          <span class="logo-name">CareFirst Hospital</span>
+          <a class="nav-logo" href="index.html">
+
+  <!-- LOGO IMAGE -->
+  <img 
+    src="./image.png" 
+    alt="CareFirst Logo"
+    class="logo-img"
+  >
+
+  <!-- LOGO TEXT -->
+  <!-- <span class="logo-text">
+    Care<em>First</em>
+  </span> -->
+
+</a>
         </div>
         <p>A trusted name in healthcare since 2001. Providing compassionate, advanced medical care across South India.</p>
         <div class="footer-contact">
