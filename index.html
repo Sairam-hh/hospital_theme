@@ -310,9 +310,55 @@ footer{background:var(--dark);color:#aab8c2;padding:72px 0 0}
 .footer-contact p{display:flex;align-items:center;gap:8px;font-size:.88rem;margin-bottom:8px}
 .footer-contact p a{color:#aab8c2;transition:color var(--tr)}
 .footer-contact p a:hover{color:#fff}
-.footer-socials{display:flex;gap:10px;margin-top:16px}
-.footer-socials a{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.07);color:#aab8c2;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all var(--tr)}
-.footer-socials a:hover{background:var(--primary);color:#fff}
+/* SOCIAL ICONS */
+
+.footer-socials{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  flex-wrap:wrap;
+}
+
+.footer-socials a{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  background:#0e9aad;
+  color:#000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  font-size:22px;
+  transition:.3s;
+  box-shadow:0 6px 18px rgba(14,154,173,.25);
+}
+
+.footer-socials a:hover{
+  transform:translateY(-4px) scale(1.05);
+  background:#12b7cf;
+}
+
+.footer-socials i{
+  line-height:1;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+  .footer-socials{
+    justify-content:center;
+    gap:12px;
+  }
+
+  .footer-socials a{
+    width:30px;
+    height:30px;
+    font-size:19px;
+  }
+
+}
 footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.08)}
 .footer-links li{margin-bottom:9px}
 .footer-links a{font-size:.88rem;transition:color var(--tr);display:flex;align-items:center;gap:7px;color:#aab8c2}
@@ -559,7 +605,7 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
   background:#fff;
   padding:5px;
   box-shadow:0 4px 12px rgba(0,0,0,.12);
-  background-color: rgb(68, 156, 122);
+  
 }
 
 .logo-text{
@@ -651,12 +697,34 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
     </div>
     <div style="display:flex;align-items:center;gap:20px;">
       <a href="tel:+911234567890">&#128222; +91 7995358828</a>
-      <div class="tb-socials">
-        <a href="404-error-page.html" title="Facebook">f</a>
-        <a href="404-error-page.html" title="Twitter">t</a>
-        <a href="404-error-page.html" title="Instagram">in</a>
-        <a href="404-error-page.html" title="YouTube">yt</a>
-      </div>
+      <!-- FONT AWESOME -->
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<!-- SOCIAL ICONS -->
+
+<div class="footer-socials">
+
+  <a href="404-error-page.html">
+    <i class="fab fa-facebook-f"></i>
+  </a>
+
+  <a href="404-error-page.html">
+    <i class="fab fa-instagram"></i>
+  </a>
+
+  <a href="404-error-page.html">
+    <i class="fab fa-twitter"></i>
+  </a>
+
+  <a href="404-error-page.html">
+    <i class="fab fa-linkedin-in"></i>
+  </a>
+
+  
+
+</div>
     </div>
   </div>
 </div>
@@ -668,7 +736,7 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
 
   <!-- LOGO IMAGE -->
   <img 
-    src="./stackly-logo (1).webp" 
+    src="./image.png" 
     alt="CareFirst Logo"
     class="logo-img"
   >
@@ -937,28 +1005,147 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
       <div class="doctor-card reveal">
         <div class="doctor-img">
           <div class="img-placeholder img-ph-doctor1"><span class="img-ph-icon">&#128084;</span></div>
-          <div class="doctor-socials"><a href="#">li</a><a href="#">tw</a><a href="#">&#9993;</a></div>
+          <div class="doctor-socials"><!-- FONT AWESOME -->
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<!-- SOCIAL ICONS -->
+
+<div class="footer-socials">
+
+  <a href="404-error-page.html">
+    <i class="fab fa-facebook-f"></i>
+  </a>
+
+  <a href="404-error-page.html">
+    <i class="fab fa-instagram"></i>
+  </a>
+
+  <a href="404-error-page.html">
+    <i class="fab fa-twitter"></i>
+  </a>
+
+  <a href="404-error-page.html">
+    <i class="fab fa-linkedin-in"></i>
+  </a>
+
+  <a href="404-error-page.html">
+    <i class="fab fa-youtube"></i>
+  </a>
+
+</div>
+</div>
         </div>
         <div class="doctor-body"><h3>Dr. Arjun Sharma</h3><div class="doctor-specialty">Chief Cardiologist</div><div class="doctor-rating"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> 4.9 (218 reviews)</div></div>
       </div>
       <div class="doctor-card reveal">
         <div class="doctor-img">
           <div class="img-placeholder img-ph-doctor2"><span class="img-ph-icon">&#128084;</span></div>
-          <div class="doctor-socials"><a href="#">li</a><a href="#">tw</a><a href="#">&#9993;</a></div>
+          <div class="doctor-socials"><!-- FONT AWESOME -->
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<!-- SOCIAL ICONS -->
+
+<div class="footer-socials">
+
+  <a href="404-error-page.html">
+    <i class="fab fa-facebook-f"></i>
+  </a>
+
+  <a href="404-error-page.html">
+    <i class="fab fa-instagram"></i>
+  </a>
+
+  <a href="404-error-page.html">
+    <i class="fab fa-twitter"></i>
+  </a>
+
+  <a href="404-error-page.html">
+    <i class="fab fa-linkedin-in"></i>
+  </a>
+
+  <a href="404-error-page.html">
+    <i class="fab fa-youtube"></i>
+  </a>
+
+</div>
+</div>
         </div>
         <div class="doctor-body"><h3>Dr. Priya Nair</h3><div class="doctor-specialty">Neurology Specialist</div><div class="doctor-rating"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> 4.8 (185 reviews)</div></div>
       </div>
       <div class="doctor-card reveal">
         <div class="doctor-img">
           <div class="img-placeholder img-ph-doctor3"><span class="img-ph-icon">&#128084;</span></div>
-          <div class="doctor-socials"><a href="#">li</a><a href="#">tw</a><a href="#">&#9993;</a></div>
+          <div class="doctor-socials"><!-- FONT AWESOME -->
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<!-- SOCIAL ICONS -->
+
+<div class="footer-socials">
+
+  <a href="404-error-page.html">
+    <i class="fab fa-facebook-f"></i>
+  </a>
+
+  <a href="404-error-page.html">
+    <i class="fab fa-instagram"></i>
+  </a>
+
+  <a href="404-error-page.html">
+    <i class="fab fa-twitter"></i>
+  </a>
+
+  <a href="404-error-page.html">
+    <i class="fab fa-linkedin-in"></i>
+  </a>
+
+  <a href="404-error-page.html">
+    <i class="fab fa-youtube"></i>
+  </a>
+
+</div>
+</div>
         </div>
         <div class="doctor-body"><h3>Dr. Rahul Mehta</h3><div class="doctor-specialty">Orthopaedic Surgeon</div><div class="doctor-rating"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> 4.9 (302 reviews)</div></div>
       </div>
       <div class="doctor-card reveal">
         <div class="doctor-img">
           <div class="img-placeholder img-ph-doctor4"><span class="img-ph-icon">&#128084;</span></div>
-          <div class="doctor-socials"><a href="#">li</a><a href="#">tw</a><a href="#">&#9993;</a></div>
+          <div class="doctor-socials"><!-- FONT AWESOME -->
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<!-- SOCIAL ICONS -->
+
+<div class="footer-socials">
+
+  <a href="404-error-page.html">
+    <i class="fab fa-facebook-f"></i>
+  </a>
+
+  <a href="404-error-page.html">
+    <i class="fab fa-instagram"></i>
+  </a>
+
+  <a href="404-error-page.html">
+    <i class="fab fa-twitter"></i>
+  </a>
+
+  <a href="404-error-page.html">
+    <i class="fab fa-linkedin-in"></i>
+  </a>
+
+  <a href="404-error-page.html">
+    <i class="fab fa-youtube"></i>
+  </a>
+
+</div></div>
         </div>
         <div class="doctor-body"><h3>Dr. Sunita Reddy</h3><div class="doctor-specialty">Oncology Director</div><div class="doctor-rating"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> 5.0 (140 reviews)</div></div>
       </div>
@@ -1088,8 +1275,21 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
     <div class="footer-grid">
       <div class="footer-brand">
         <div class="logo-wrap">
-          <div class="logo-icon">&#10084;</div>
-          <span class="logo-name">CareFirst Hospital</span>
+          <a class="nav-logo" href="index.html">
+
+  <!-- LOGO IMAGE -->
+  <img 
+    src="./image.png" 
+    alt="CareFirst Logo"
+    class="logo-img"
+  >
+
+  <!-- LOGO TEXT -->
+  <!-- <span class="logo-text">
+    Care<em>First</em>
+  </span> -->
+
+</a>
         </div>
         <p>A trusted name in healthcare since 2001. Providing compassionate, advanced medical care across South India.</p>
         <div class="footer-contact">
@@ -1097,9 +1297,36 @@ footer h4{font-size:.97rem;font-weight:700;color:#fff;margin-bottom:18px;padding
           <p><span style="color:var(--accent);">&#128222;</span> <a href="tel:+911234567890">+91 1234567890</a></p>
           <p><span style="color:var(--accent);">&#9993;</span> <a href="mailto:care@carefirst.com">care@carefirst.com</a></p>
         </div>
-        <div class="footer-socials">
-          <a href="404-error-page.html">f</a><a href="404-error-page.html">t</a><a href="404-error-page.html">in</a><a href="404-error-page.html">yt</a><a href="404-error-page.html">li</a>
-        </div>
+        <!-- FONT AWESOME -->
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<!-- SOCIAL ICONS -->
+
+<div class="footer-socials">
+
+  <a href="404-error-page.html">
+    <i class="fab fa-facebook-f"></i>
+  </a>
+
+  <a href="404-error-page.html">
+    <i class="fab fa-instagram"></i>
+  </a>
+
+  <a href="404-error-page.html">
+    <i class="fab fa-twitter"></i>
+  </a>
+
+  <a href="404-error-page.html">
+    <i class="fab fa-linkedin-in"></i>
+  </a>
+
+  <a href="404-error-page.html">
+    <i class="fab fa-youtube"></i>
+  </a>
+
+</div>
       </div>
       <div>
         <h4>Hospital Services</h4>
