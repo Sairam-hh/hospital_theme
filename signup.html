@@ -291,9 +291,7 @@
 
     /* ── Stackly Logo ── */
     .stackly-logo-wrap{display:flex;flex-direction:column;align-items:center;gap:0;}
-    .stackly-ring{width:66px;height:66px;border-radius:18px;background:linear-gradient(135deg,var(--primary-dark) 0%,var(--primary-mid) 100%);display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px;box-shadow:0 8px 28px rgba(10,110,138,0.55),0 0 0 1px rgba(255,255,255,0.10) inset;position:relative;overflow:hidden;}
-    .stackly-ring::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.12) 0%,transparent 60%);}
-    .stackly-ring svg{width:34px;height:34px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;position:relative;z-index:1;}
+    
     .stackly-wordmark{display:flex;align-items:baseline;gap:0;}
     .stackly-s1{font-size:clamp(22px,5vw,27px);font-weight:800;color:#fff;letter-spacing:-1px;font-family:Georgia,serif;}
     .stackly-s2{font-size:clamp(22px,5vw,27px);font-weight:800;color:var(--accent);letter-spacing:-1px;font-family:Georgia,serif;}
@@ -320,6 +318,8 @@
   color:#00a0f0;
   font-style:normal;
 }
+
+
   </style>
 </head>
 <body>
@@ -336,31 +336,17 @@
     <!-- Header -->
     <div class="card-header">
       <div class="stackly-logo-wrap">
-        <div class="stackly-ring">
-          <svg viewBox="0 0 36 36">
-            <rect x="4" y="24" width="28" height="6" rx="3" fill="rgba(255,255,255,0.35)"/>
-            <rect x="7" y="17" width="22" height="6" rx="3" fill="rgba(255,255,255,0.60)"/>
-            <rect x="10" y="10" width="16" height="5" rx="2.5" fill="#ffffff"/>
-            <rect x="15.5" y="5" width="5" height="16" rx="2.5" fill="#ffffff"/>
-          </svg>
-        </div>
+        
         <div class="stackly-wordmark">
-          <!-- <span class="stackly-s1">Stack</span><span class="stackly-s2">ly</span> -->
            <a class="nav-logo" href="index.html">
 
-  <!-- LOGO IMAGE -->
-  <img 
-    src="./image.png" 
-    alt="CareFirst Logo"
-    class="logo-img"
-  >
-
-  <!-- LOGO TEXT -->
-  <!-- <span class="logo-text">
-    Care<em>First</em>
-  </span> -->
-
-</a>
+          <!-- LOGO IMAGE -->
+          <img 
+            src="./image.png" 
+            alt="CareFirst Logo"
+            class="logo-img"
+          >
+        </a>
         </div>
         <div class="stackly-tagline">Healthcare Portal</div>
       </div>
@@ -412,6 +398,24 @@
             <span class="field-error" id="lastNameError"></span>
           </div>
         </div>
+
+        <div class="field">
+          <label for="role">Select Role</label>
+          <div class="input-wrap">
+            <span class="icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8l10 6 10-6"/></svg>
+            </span>
+            <!-- <input type="email" id="regEmail" placeholder="your@email.com" autocomplete="email"/> -->
+             <select class="native-select" id="role">
+                <option value="">Select Role</option>
+                <option value="patient">Patient</option>
+                <option value="doctor">Doctor</option>
+                <option value="admin">Admin</option>
+              </select>
+          </div>
+          <span class="field-error" id="roleError"></span>
+        </div>
+
 
         <div class="field">
           <label>Email Address</label>
