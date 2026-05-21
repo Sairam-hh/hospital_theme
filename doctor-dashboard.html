@@ -3,27 +3,27 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Doctor Dashboard | CareFirst Hospital</title>
+  <title>Doctor Dashboard | Stackly Hospital</title>
   <style>
     :root{--primary:#0a6e8a;--primary-dark:#064d63;--primary-mid:#0e8fa8;--accent:#f0a500;--white:#fff;--light:#f0f8fb;--border:#d0e8f0;--text:#2c3e50;--gray:#6b8fa3;--radius:14px;--radius-sm:8px;--shadow:0 4px 20px rgba(10,110,138,.10);--shadow-lg:0 12px 40px rgba(10,110,138,.18);}
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
     html,body{width:100%;min-height:100vh;background:var(--light);font-family:'Segoe UI',system-ui,sans-serif;color:var(--text);}
-    .sidebar{position:fixed;left:0;top:0;bottom:0;width:250px;background:#03222d;display:flex;flex-direction:column;z-index:100;transition:transform .3s ease;}
+    .sidebar{position:fixed;left:0;top:0;bottom:0;width:250px;background:#062a38;display:flex;flex-direction:column;z-index:100;transition:transform .3s ease;}
     .sidebar-logo{padding:24px 20px 20px;border-bottom:1px solid rgba(255,255,255,.10);}
     .s-logo-ring{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--primary-mid));margin-right:10px;}
     .s-logo-ring svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
     .s-logo-text{font-size:1.15rem;font-weight:700;color:#fff;vertical-align:middle;}
     .s-logo-text em{color:var(--accent);font-style:normal;}
     .sidebar-user{padding:18px 20px;border-bottom:1px solid rgba(255,255,255,.08);}
-    .s-avatar{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#1d6a3e,#22c55e);display:flex;align-items:center;justify-content:center;font-size:19px;color:#fff;font-weight:700;margin-bottom:8px;}
+    .s-avatar{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#0a6e8a,#0e8fa8);display:flex;align-items:center;justify-content:center;font-size:19px;color:#fff;font-weight:700;margin-bottom:8px;}
     .s-name{font-size:.9rem;font-weight:700;color:#fff;}
-    .s-role{font-size:.75rem;color:rgba(255,255,255,.55);background:rgba(34,197,94,.18);padding:2px 10px;border-radius:20px;display:inline-block;margin-top:3px;}
+    .s-role{font-size:.75rem;color:rgba(255,255,255,.55);background:rgba(14,143,168,.22);padding:2px 10px;border-radius:20px;display:inline-block;margin-top:3px;}
     .sidebar-nav{flex:1;padding:14px 12px;overflow-y:auto;}
     .nav-section-label{font-size:.68rem;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:rgba(255,255,255,.35);padding:10px 8px 6px;}
     .nav-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-sm);color:rgba(255,255,255,.65);font-size:.88rem;font-weight:500;cursor:pointer;transition:all .2s;margin-bottom:2px;text-decoration:none;}
     .nav-item svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0;}
-    .nav-item:hover,.nav-item.active{background:rgba(255,255,255,.10);color:#fff;}
-    .nav-item.active{background:linear-gradient(90deg,rgba(34,197,94,.25),rgba(34,197,94,.08));border-left:3px solid #22c55e;}
+    .nav-item:hover{background:rgba(14,143,168,.14);color:#fff;}
+    .nav-item.active{background:linear-gradient(90deg,rgba(14,143,168,.30),rgba(14,143,168,.08));border-left:3px solid #0e8fa8;color:#fff;padding-left:9px;}
     .sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.08);}
     .logout-btn{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.55);font-size:.85rem;cursor:pointer;text-decoration:none;transition:color .2s;}
     .logout-btn:hover{color:#fc8181;}
@@ -38,17 +38,16 @@
     .notif-btn{position:relative;background:var(--light);border:1px solid var(--border);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;}
     .notif-btn svg{width:18px;height:18px;stroke:var(--primary);fill:none;stroke-width:2;stroke-linecap:round;}
     .notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:#ef4444;border-radius:50%;border:2px solid #fff;}
-    .topbar-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#1d6a3e,#22c55e);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.9rem;cursor:pointer;}
+    .topbar-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#0a6e8a,#0e8fa8);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.9rem;cursor:pointer;}
     .main{margin-left:250px;margin-top:64px;padding:28px;min-height:calc(100vh - 64px);}
     /* GREETING */
-    .greeting-card{background:linear-gradient(120deg,var(--primary-dark) 0%,var(--primary) 60%,var(--primary-mid) 100%);border-radius:var(--radius);padding:28px 32px;color:#fff;margin-bottom:24px;position:relative;overflow:hidden;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+    .greeting-card{background:linear-gradient(120deg,#03232e 0%,#064d63 55%,#0a6e8a 100%);border-radius:var(--radius);padding:28px 32px;color:#fff;margin-bottom:24px;position:relative;overflow:hidden;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
     .greeting-card::before{content:'';position:absolute;right:-40px;top:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.05);}
-    .greeting-card::after{content:'';position:absolute;right:40px;bottom:-60px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.04);}
     .greeting-text h2{font-size:1.4rem;font-weight:700;margin-bottom:4px;}
     .greeting-text p{font-size:.88rem;opacity:.80;}
     .greeting-actions{display:flex;gap:10px;flex-wrap:wrap;position:relative;z-index:2;}
-    .btn-green{background:white;color:green;padding:9px 18px;border-radius:30px;font-size:.82rem;font-weight:700;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;}
-    .btn-outline-w{border:2px solid rgba(255,255,255,.5);color:#fff;padding:9px 18px;border-radius:30px;font-size:.82rem;font-weight:600;background:transparent;cursor:pointer;}
+    .btn-green{background:#fff;color:#0a6e8a;padding:9px 18px;border-radius:30px;font-size:.82rem;font-weight:700;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .2s;}
+    .btn-outline-w{border:2px solid rgba(255,255,255,.5);color:#fff;padding:9px 18px;border-radius:30px;font-size:.82rem;font-weight:600;background:transparent;cursor:pointer;transition:all .2s;}
     /* STATS */
     .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;}
     .stat-card{background:#fff;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);border:1px solid var(--border);display:flex;align-items:center;gap:14px;transition:all .2s;}
@@ -180,6 +179,15 @@
       .topbar-right .tb-admin-name { display: none; }
     }
 
+    /* ── Stackly Sidebar Logo ── */
+    .stackly-wrap{display:flex;align-items:center;gap:11px;text-decoration:none;}
+    .stackly-icon{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#0a6e8a,#0e8fa8);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 14px rgba(10,110,138,0.45);position:relative;overflow:hidden;}
+    .stackly-icon::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.14) 0%,transparent 60%);}
+    .stackly-icon svg{width:22px;height:22px;position:relative;z-index:1;}
+    .stackly-name{line-height:1;}
+    .stackly-name .s1{font-size:1.15rem;font-weight:800;color:#fff;letter-spacing:-0.5px;font-family:Georgia,serif;}
+    .stackly-name .s2{font-size:1.15rem;font-weight:800;color:#f0a500;letter-spacing:-0.5px;font-family:Georgia,serif;}
+    .stackly-name .sub{font-size:0.60rem;color:rgba(176,220,235,0.60);letter-spacing:0.5px;text-transform:uppercase;display:block;margin-top:1px;}
     .logo-img{
   width:110px;
   height:42px;
@@ -188,6 +196,8 @@
   background:#fff;
   padding:5px;
   box-shadow:0 4px 12px rgba(0,0,0,.12);
+ 
+  
   
 }
 
@@ -208,25 +218,17 @@
 
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-logo">
-    <div style="display:flex;align-items:center;">
-      <div class="s-logo-ring"><svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="20" rx="1"/><rect x="2" y="9" width="20" height="6" rx="1"/></svg></div>
-      <!-- <span class="s-logo-text">Care<em>First</em></span> -->
-       <a class="nav-logo" href="index.html">
-
-  <!-- LOGO IMAGE -->
-  <img 
-    src="./image.png" 
-    alt="CareFirst Logo"
-    class="logo-img"
-  >
-
-  <!-- LOGO TEXT -->
-  <!-- <span class="logo-text">
-    Care<em>First</em>
-  </span> -->
-
-</a>
-    </div>
+    <a class="stackly-wrap" href="index.html">
+      
+      <div class="stackly-name">
+        <a class="nav-logo" href="index.html">
+        <img 
+        src="./image.png" 
+        alt="CareFirst Logo"
+        class="logo-img">
+        </a>
+      </div>
+    </a>
   </div>
   <div class="sidebar-user">
     <div class="s-avatar" id="sidebarAvatar">DR</div>
